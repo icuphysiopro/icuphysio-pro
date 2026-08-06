@@ -1131,8 +1131,9 @@ body.light .module-card{background:#fff}
       <div style="background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px">
         <div style="font-size:12px;font-family:var(--mono);color:var(--text3);margin-bottom:8px">RENAL</div>
         <div class="input-group"><label class="input-label">Creatinina <span class="input-unit">mg/dL</span></label><input class="input-field" type="number" id="sofa-creat" placeholder="1.0" step="0.1" oninput="calcSOFA()"></div>
-        <div class="input-group" style="margin-top:8px"><label class="input-label">Diuresis <span class="input-unit">mL/día (opcional)</span></label><input class="input-field" type="number" id="sofa-diuresis" placeholder="500" oninput="calcSOFA()"></div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px">Diuresis &lt;500=3pts, &lt;200=4pts · Se usa el mayor entre Cr y Diuresis</div>
+        <div style="text-align:center;font-size:13px;font-weight:700;color:var(--text3);font-family:var(--mono);margin:6px 0">— O —</div>
+        <div class="input-group"><label class="input-label">Diuresis <span class="input-unit">mL/día</span></label><input class="input-field" type="number" id="sofa-diuresis" placeholder="500" oninput="calcSOFA()"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">Se usa el mayor puntaje entre Cr y Diuresis · Diuresis &lt;500=3pts, &lt;200=4pts</div>
       </div>
 
       <button class="reset-btn" onclick="resetCard(this)">↺ Limpiar</button>
@@ -3867,15 +3868,19 @@ function calcSOFA(){
 
   const qTotal=Object.values(qsofaD).filter(x=>x!==null).reduce((s,x)=>s+x,0);
   const msgs={
-    lo:{es:'SOFA bajo — disfunción orgánica mínima · mortalidad <10%',en:'Low SOFA — minimal organ dysfunction · mortality <10%',pt:'SOFA baixo — disfunção orgânica mínima · mortalidade <10%'},
-    mid:{es:'SOFA moderado — disfunción significativa · mortalidad ~20–35%',en:'Moderate SOFA — significant dysfunction · mortality ~20–35%',pt:'SOFA moderado — disfunção significativa · mortalidade ~20–35%'},
-    hi:{es:'SOFA alto — disfunción severa · mortalidad >50%',en:'High SOFA — severe dysfunction · mortality >50%',pt:'SOFA alto — disfunção grave · mortalidade >50%'},
-    vhi:{es:'SOFA muy alto (>11) — mortalidad >90%',en:'Very high SOFA (>11) — mortality >90%',pt:'SOFA muito alto (>11) — mortalidade >90%'}
+    s01:{es:'SOFA 0–1 · mortalidad <10%',en:'SOFA 0–1 · mortality <10%',pt:'SOFA 0–1 · mortalidade <10%'},
+    s23:{es:'SOFA 2–3 · mortalidad <10%',en:'SOFA 2–3 · mortality <10%',pt:'SOFA 2–3 · mortalidade <10%'},
+    s45:{es:'SOFA 4–5 · mortalidad ~15–20%',en:'SOFA 4–5 · mortality ~15–20%',pt:'SOFA 4–5 · mortalidade ~15–20%'},
+    s67:{es:'SOFA 6–7 · mortalidad ~20–25%',en:'SOFA 6–7 · mortality ~20–25%',pt:'SOFA 6–7 · mortalidade ~20–25%'},
+    s89:{es:'SOFA 8–9 · mortalidad ~40%',en:'SOFA 8–9 · mortality ~40%',pt:'SOFA 8–9 · mortalidade ~40%'},
+    s1011:{es:'SOFA 10–11 · mortalidad ~40–50%',en:'SOFA 10–11 · mortality ~40–50%',pt:'SOFA 10–11 · mortalidade ~40–50%'},
+    s12:{es:'SOFA ≥12 · mortalidad >80%',en:'SOFA ≥12 · mortality >80%',pt:'SOFA ≥12 · mortalidade >80%'}
   };
-  const sofaKey=sofa<=6?'lo':sofa<=11?'mid':sofa<=14?'hi':'vhi';
-  const vmNote=conVM?' · VM activa':''
+  const sofaKey=sofa<=1?'s01':sofa<=3?'s23':sofa<=5?'s45':sofa<=7?'s67':sofa<=9?'s89':sofa<=11?'s1011':'s12';
+  const sofaColor=sofa<=3?'':sofa<=5?'warn':sofa<=7?'warn':'danger';
+  const vmNote=conVM?' · VM activa':'';
   const qText=Object.values(qsofaD).some(x=>x!==null)?(qTotal>=2?' · qSOFA ≥2: ALTO riesgo sepsis':' · qSOFA <2: bajo riesgo sepsis'):'';
-  setInterp('sofa-interp',(msgs[sofaKey][appLang]||msgs[sofaKey].es)+vmNote+qText,sofaKey==='lo'?'':sofaKey==='vhi'||sofaKey==='hi'?'danger':'warn');
+  setInterp('sofa-interp',(msgs[sofaKey][appLang]||msgs[sofaKey].es)+vmNote+qText,sofaColor);
 }
 
 
