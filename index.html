@@ -62,7 +62,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .module-card-wide .module-card-icon{font-size:22px;margin-bottom:0}
 .module-card-wide .module-card-text{flex:1}
 .screen{display:none;flex-direction:column;min-height:100vh}.screen.active{display:flex}
-.screen-body{padding:20px;flex:1;display:flex;flex-direction:column;gap:14px}
+.screen-body{padding:20px;padding-bottom:70px;flex:1;display:flex;flex-direction:column;gap:14px}
 .calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.25)}
 .calc-card-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(34,211,238,.06),rgba(139,92,246,.04))}
 .calc-card-header-icon{font-size:12px;font-weight:900;font-family:var(--mono);color:var(--accent);background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);border-radius:5px;padding:3px 7px;flex-shrink:0}
@@ -1056,9 +1056,9 @@ body.light .module-card{background:#fff}
       </div>
     </div></div>
 
-    <!-- SOFA Modificado -->
-    <div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">SOFA</span><span class="calc-card-title">qSOFA y SOFA Simplificado</span></div><div class="calc-card-body">
-      <div class="formula-box">qSOFA ≥2 puntos: alta sospecha sepsis · SOFA ≥2 aumento: criterio diagnóstico sepsis · Ref: Singer M, JAMA 2016</div>
+    <!-- SOFA Completo -->
+    <div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">SOFA</span><span class="calc-card-title">qSOFA y SOFA Completo</span></div><div class="calc-card-body">
+      <div class="formula-box">qSOFA ≥2: alta sospecha sepsis · SOFA ≥2 aumento: criterio diagnóstico sepsis · Ref: Vincent JL, Intensive Care Med 1996 · Singer M, JAMA 2016</div>
 
       <div style="font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:2px;margin-bottom:8px">qSOFA (Bedside)</div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
@@ -1085,19 +1085,56 @@ body.light .module-card{background:#fff}
         </div>
       </div>
 
-      <div style="font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:2px;margin-bottom:8px">SOFA SIMPLIFICADO</div>
-      <div class="input-row">
+      <div style="font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:2px;margin-bottom:8px">SOFA COMPLETO</div>
+
+      <!-- Respiratorio con toggle VM -->
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-family:var(--mono);color:var(--text3)">RESPIRATORIO</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;color:var(--text3)">Con VM</span>
+            <label style="position:relative;display:inline-block;width:36px;height:20px">
+              <input type="checkbox" id="sofa-vm" onchange="calcSOFA()" style="opacity:0;width:0;height:0">
+              <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:20px;transition:.3s" id="sofa-vm-slider" onclick="document.getElementById('sofa-vm-slider').style.background=document.getElementById('sofa-vm').checked?'var(--accent)':'var(--border)'"></span>
+            </label>
+          </div>
+        </div>
         <div class="input-group"><label class="input-label">PaFi <span class="input-unit">mmHg</span></label><input class="input-field" type="number" id="sofa-pafi" placeholder="300" oninput="calcSOFA()"></div>
-        <div class="input-group"><label class="input-label">Plaquetas <span class="input-unit">×10³/μL</span></label><input class="input-field" type="number" id="sofa-plaq" placeholder="150" oninput="calcSOFA()"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">Sin VM: PaFi&lt;200 máx 2pts · Con VM: PaFi&lt;200=3pts, &lt;100=4pts</div>
       </div>
-      <div class="input-row">
-        <div class="input-group"><label class="input-label">Bilirrubina <span class="input-unit">mg/dL</span></label><input class="input-field" type="number" id="sofa-bili" placeholder="1.0" step="0.1" oninput="calcSOFA()"></div>
-        <div class="input-group"><label class="input-label">Creatinina <span class="input-unit">mg/dL</span></label><input class="input-field" type="number" id="sofa-creat" placeholder="1.0" step="0.1" oninput="calcSOFA()"></div>
-      </div>
-      <div class="input-row">
+
+      <!-- Coagulación -->
+      <div class="input-group"><label class="input-label">Plaquetas <span class="input-unit">×10³/μL</span></label><input class="input-field" type="number" id="sofa-plaq" placeholder="150" oninput="calcSOFA()"></div>
+
+      <!-- Cardiovascular con DVA -->
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+        <div style="font-size:12px;font-family:var(--mono);color:var(--text3);margin-bottom:8px">CARDIOVASCULAR</div>
         <div class="input-group"><label class="input-label">PAM <span class="input-unit">mmHg</span></label><input class="input-field" type="number" id="sofa-pam" placeholder="70" oninput="calcSOFA()"></div>
-        <div class="input-group"><label class="input-label">Glasgow <span class="input-unit">3–15</span></label><input class="input-field" type="number" id="sofa-gcs" placeholder="15" oninput="calcSOFA()"></div>
+        <div class="input-group" style="margin-top:8px"><label class="input-label">Vasoactivos</label>
+          <div class="select-wrapper"><select class="select-field" id="sofa-dva" onchange="calcSOFA()">
+            <option value="0">Sin vasoactivos</option>
+            <option value="2">Dopamina &lt;5 o Dobutamina (cualquier dosis)</option>
+            <option value="3">Dopamina &gt;5 o Adrenalina/Noradrenalina ≤0.1 μg/kg/min</option>
+            <option value="4">Dopamina &gt;15 o Adrenalina/Noradrenalina &gt;0.1 μg/kg/min</option>
+          </select></div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">PAM&lt;70=1pt · DVA tiene prioridad sobre PAM si mayor puntaje</div>
       </div>
+
+      <!-- Glasgow -->
+      <div class="input-group"><label class="input-label">Glasgow <span class="input-unit">3–15</span></label><input class="input-field" type="number" id="sofa-gcs" placeholder="15" oninput="calcSOFA()"></div>
+
+      <!-- Hepático -->
+      <div class="input-group"><label class="input-label">Bilirrubina <span class="input-unit">mg/dL</span></label><input class="input-field" type="number" id="sofa-bili" placeholder="1.0" step="0.1" oninput="calcSOFA()"></div>
+
+      <!-- Renal -->
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+        <div style="font-size:12px;font-family:var(--mono);color:var(--text3);margin-bottom:8px">RENAL</div>
+        <div class="input-group"><label class="input-label">Creatinina <span class="input-unit">mg/dL</span></label><input class="input-field" type="number" id="sofa-creat" placeholder="1.0" step="0.1" oninput="calcSOFA()"></div>
+        <div class="input-group" style="margin-top:8px"><label class="input-label">Diuresis <span class="input-unit">mL/día (opcional)</span></label><input class="input-field" type="number" id="sofa-diuresis" placeholder="500" oninput="calcSOFA()"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:4px">Diuresis &lt;500=3pts, &lt;200=4pts · Se usa el mayor entre Cr y Diuresis</div>
+      </div>
+
       <button class="reset-btn" onclick="resetCard(this)">↺ Limpiar</button>
       <div class="result-box" id="sofa-result" style="display:none;margin-top:10px">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
@@ -1112,6 +1149,8 @@ body.light .module-card{background:#fff}
             <div style="font-size:10px;color:var(--text3)">/ 24</div>
           </div>
         </div>
+        <!-- Subescores -->
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="sofa-subscores"></div>
         <div class="result-interp" id="sofa-interp" style="margin-top:8px"></div>
       </div>
     </div></div>
@@ -3767,24 +3806,76 @@ function calcSOFA(){
   const pafi=parseNum('sofa-pafi'),plaq=parseNum('sofa-plaq');
   const bili=parseNum('sofa-bili'),creat=parseNum('sofa-creat');
   const pam=parseNum('sofa-pam'),gcs=parseNum('sofa-gcs');
+  const diuresis=parseNum('sofa-diuresis');
+  const conVM=document.getElementById('sofa-vm')&&document.getElementById('sofa-vm').checked;
+  const dvaVal=document.getElementById('sofa-dva')?parseInt(document.getElementById('sofa-dva').value)||0:0;
   let sofa=0;
-  if(pafi!==null){sofa+=pafi<100?4:pafi<200?3:pafi<300?2:pafi<400?1:0;}
-  if(plaq!==null){sofa+=plaq<20?4:plaq<50?3:plaq<100?2:plaq<150?1:0;}
-  if(bili!==null){sofa+=bili>=12?4:bili>=6?3:bili>=2?2:bili>=1.2?1:0;}
-  if(creat!==null){sofa+=creat>=5?4:creat>=3.5?3:creat>=2?2:creat>=1.2?1:0;}
-  if(pam!==null){sofa+=pam<70?1:0;}
-  if(gcs!==null){sofa+=gcs<6?4:gcs<10?3:gcs<13?2:gcs<15?1:0;}
+  let sResp=0,sCoag=0,sCardio=0,sNeuro=0,sHep=0,sRenal=0;
+
+  // Respiratorio: considera VM para PaFi <200
+  if(pafi!==null){
+    if(pafi>=400) sResp=0;
+    else if(pafi<400&&pafi>=300) sResp=1;
+    else if(pafi<300&&pafi>=200) sResp=2;
+    else if(pafi<200&&pafi>=100) sResp=conVM?3:2;
+    else sResp=conVM?4:2; // PaFi<100 sin VM cap en 2
+  }
+
+  // Coagulación
+  if(plaq!==null) sCoag=plaq<20?4:plaq<50?3:plaq<100?2:plaq<150?1:0;
+
+  // Cardiovascular: DVA tiene prioridad sobre PAM
+  if(dvaVal>0){
+    sCardio=dvaVal; // valor directo del selector (2,3,4)
+  } else if(pam!==null){
+    sCardio=pam<70?1:0;
+  }
+
+  // Neurológico
+  if(gcs!==null) sNeuro=gcs<6?4:gcs<10?3:gcs<13?2:gcs<15?1:0;
+
+  // Hepático
+  if(bili!==null) sHep=bili>=12?4:bili>=6?3:bili>=2?2:bili>=1.2?1:0;
+
+  // Renal: mayor entre creatinina y diuresis
+  let sCr=0,sDiu=0;
+  if(creat!==null) sCr=creat>=5?4:creat>=3.5?3:creat>=2?2:creat>=1.2?1:0;
+  if(diuresis!==null) sDiu=diuresis<200?4:diuresis<500?3:0;
+  sRenal=Math.max(sCr,sDiu);
+
+  sofa=sResp+sCoag+sCardio+sNeuro+sHep+sRenal;
   sTxt('sofa-val',sofa);
   document.getElementById('sofa-result').style.display='block';
+
+  // Subescores
+  const subsEl=document.getElementById('sofa-subscores');
+  if(subsEl){
+    const items=[
+      {l:'Resp',v:sResp,max:4},
+      {l:'Coag',v:sCoag,max:4},
+      {l:'Cardio',v:sCardio,max:4},
+      {l:'Neuro',v:sNeuro,max:4},
+      {l:'Hep',v:sHep,max:4},
+      {l:'Renal',v:sRenal,max:4}
+    ];
+    subsEl.innerHTML=items.map(i=>`<div style="background:var(--surface2);border-radius:8px;padding:6px;text-align:center">
+      <div style="font-size:9px;color:var(--text3);font-family:var(--mono)">${i.l}</div>
+      <div style="font-size:18px;font-weight:800;font-family:var(--mono);color:${i.v>=3?'var(--danger)':i.v>=1?'var(--warn)':'var(--accent3)'}">${i.v}</div>
+      <div style="font-size:9px;color:var(--text3)">/${i.max}</div>
+    </div>`).join('');
+  }
+
   const qTotal=Object.values(qsofaD).filter(x=>x!==null).reduce((s,x)=>s+x,0);
   const msgs={
-    lo:{es:'SOFA bajo — disfunción orgánica mínima',en:'Low SOFA — minimal organ dysfunction',pt:'SOFA baixo — disfunção orgânica mínima'},
-    mid:{es:'SOFA moderado — disfunción significativa · mortalidad ~20%',en:'Moderate SOFA — significant dysfunction · mortality ~20%',pt:'SOFA moderado — disfunção significativa · mortalidade ~20%'},
-    hi:{es:'SOFA alto — disfunción severa · mortalidad >50%',en:'High SOFA — severe dysfunction · mortality >50%',pt:'SOFA alto — disfunção grave · mortalidade >50%'}
+    lo:{es:'SOFA bajo — disfunción orgánica mínima · mortalidad <10%',en:'Low SOFA — minimal organ dysfunction · mortality <10%',pt:'SOFA baixo — disfunção orgânica mínima · mortalidade <10%'},
+    mid:{es:'SOFA moderado — disfunción significativa · mortalidad ~20–35%',en:'Moderate SOFA — significant dysfunction · mortality ~20–35%',pt:'SOFA moderado — disfunção significativa · mortalidade ~20–35%'},
+    hi:{es:'SOFA alto — disfunción severa · mortalidad >50%',en:'High SOFA — severe dysfunction · mortality >50%',pt:'SOFA alto — disfunção grave · mortalidade >50%'},
+    vhi:{es:'SOFA muy alto (>11) — mortalidad >90%',en:'Very high SOFA (>11) — mortality >90%',pt:'SOFA muito alto (>11) — mortalidade >90%'}
   };
-  const sofaKey=sofa<=6?'lo':sofa<=11?'mid':'hi';
-  const qText=Object.values(qsofaD).some(x=>x!==null)?(qTotal>=2?appLang==='en'?' · qSOFA ≥2: HIGH sepsis risk':appLang==='pt'?' · qSOFA ≥2: ALTO risco de sepse':' · qSOFA ≥2: ALTO riesgo de sepsis':appLang==='en'?' · qSOFA <2: low sepsis risk':appLang==='pt'?' · qSOFA <2: baixo risco de sepse':' · qSOFA <2: bajo riesgo de sepsis'):'';
-  setInterp('sofa-interp',(msgs[sofaKey][appLang]||msgs[sofaKey].es)+qText,sofaKey==='lo'?'':sofaKey==='hi'?'danger':'warn');
+  const sofaKey=sofa<=6?'lo':sofa<=11?'mid':sofa<=14?'hi':'vhi';
+  const vmNote=conVM?' · VM activa':''
+  const qText=Object.values(qsofaD).some(x=>x!==null)?(qTotal>=2?' · qSOFA ≥2: ALTO riesgo sepsis':' · qSOFA <2: bajo riesgo sepsis'):'';
+  setInterp('sofa-interp',(msgs[sofaKey][appLang]||msgs[sofaKey].es)+vmNote+qText,sofaKey==='lo'?'':sofaKey==='vhi'||sofaKey==='hi'?'danger':'warn');
 }
 
 
@@ -3858,7 +3949,7 @@ function closeProModal(){
 
 function openProPurchase(){
   // Replace with your actual Lemon Squeezy link
-  window.open('https://icuphysio.lemonsqueezy.com/checkout/buy/100fe751-3a96-40c7-8101-6216d15eca37','_blank');
+  window.open('https://edanco.lemonsqueezy.com/buy/icuphysio-pro','_blank');
 }
 
 function activateProCode(){
@@ -3876,6 +3967,8 @@ function activateProCode(){
       closeProModal();
       // Refresh home to show unlocked modules
       document.querySelectorAll('.pro-badge').forEach(b=>b.style.display='none');
+      const admobBanner=document.getElementById('admob-banner');
+      if(admobBanner)admobBanner.style.display='none';
     },1500);
   } else {
     msg.style.color='var(--danger)';
@@ -4044,5 +4137,23 @@ document.addEventListener('DOMContentLoaded',init);
 
 
 
+
+<!-- ADMOB BANNER -->
+<div id="admob-banner" style="
+  position:fixed;bottom:0;left:0;right:0;
+  height:50px;z-index:9990;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <ins class="adsbygoogle"
+    style="display:block;width:320px;height:50px"
+    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+    data-ad-slot="XXXXXXXXXX"
+    data-ad-format="banner"
+    data-full-width-responsive="false"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
 </body>
 </html>
