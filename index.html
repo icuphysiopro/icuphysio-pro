@@ -3972,8 +3972,7 @@ function activateProCode(){
       closeProModal();
       // Refresh home to show unlocked modules
       document.querySelectorAll('.pro-badge').forEach(b=>b.style.display='none');
-      const admobBanner=document.getElementById('admob-banner');
-      if(admobBanner)admobBanner.style.display='none';
+
     },1500);
   } else {
     msg.style.color='var(--danger)';
@@ -4143,22 +4142,5 @@ document.addEventListener('DOMContentLoaded',init);
 
 
 
-<!-- ADMOB BANNER -->
-<div id="admob-banner" style="
-  position:fixed;bottom:0;left:0;right:0;
-  height:50px;z-index:9990;
-  background:var(--surface);
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-9451800067984997~7554520871" crossorigin="anonymous"></script>
-  <ins class="adsbygoogle"
-    style="display:block;width:320px;height:50px"
-    data-ad-client="ca-app-pub-9451800067984997"
-    data-ad-slot="8913055767"
-    data-ad-format="banner"
-    data-full-width-responsive="false"></ins>
-  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-</div>
 </body>
 </html>
