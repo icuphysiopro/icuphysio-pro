@@ -365,7 +365,7 @@ body.light .module-card{background:#fff}
     <div class="module-grid">
       <div class="module-card accent-blue" onclick="nav('mrc')"><div class="module-card-icon">MRC</div><div class="module-card-title">MRC</div><div class="module-card-sub">Fuerza muscular</div></div>
       <div class="module-card accent-blue" onclick="navPro('mobility')"><div class="module-card-icon">IMS</div><div class="module-card-title">ICU Mobility<span class="pro-badge">PRO</span></div><div class="module-card-sub">Movilidad UCI</div></div>
-      <div class="module-card accent-blue" onclick="navPro('screening')"><div class="module-card-icon">SCR</div><div class="module-card-title">Screening Movilización<span class="pro-badge">PRO</span></div><div class="module-card-sub">Hodgson · Delphi 2026</div></div>
+      <div class="module-card accent-blue" onclick="navPro('screening')"><div class="module-card-icon">SCR</div><div class="module-card-title">Screening Movilización<span class="pro-badge">PRO</span></div><div class="module-card-sub">Enriquez Popayan · Delphi 2026</div></div>
       <div class="module-card accent-blue" onclick="nav('barthel')"><div class="module-card-icon">BTH</div><div class="module-card-title">Barthel</div><div class="module-card-sub">Independencia funcional</div></div>
       <div class="module-card accent-blue" onclick="navPro('sts')"><div class="module-card-icon">STS</div><div class="module-card-title">Sit-to-Stand<span class="pro-badge">PRO</span></div><div class="module-card-sub">5-STS · 30s-STS</div></div>
       <div class="module-card accent-blue" onclick="nav('fssicu');buildFSSICU()"><div class="module-card-icon">FSS</div><div class="module-card-title">FSS-ICU</div><div class="module-card-sub">Functional Status Score</div></div>
@@ -913,68 +913,90 @@ body.light .module-card{background:#fff}
 
 <!-- SCREENING MOVILIZACIÓN TEMPRANA -->
 <div class="screen" id="screen-screening">
-  <div class="header"><div class="header-back" onclick="goBack()">‹</div><div class="header-title">Screening Movilización Temprana</div><div class="header-badge">MOTOR</div></div>
-  <div class="screen-body" id="screening-body" style="padding:0 0 180px 0">
-
+  <div class="header"><div class="header-back" onclick="goBack()">‹</div><div class="header-title">Screening Lab. Movilización</div><div class="header-badge">MOTOR</div></div>
+  <div class="screen-body" style="padding:0 0 160px 0">
     <div style="padding:14px 14px 0">
-      <p style="font-size:12px;color:var(--text3);margin:0 0 10px;line-height:1.5">Semáforo clínico Hodgson 2014 · Laboratorio Enriquez Popayan 2026 · Completa solo lo disponible; el resultado se actualiza en tiempo real.</p>
 
-      <!-- Signos vitales -->
+      <p style="font-size:12px;color:var(--text3);margin:0 0 12px;line-height:1.5">Recomendaciones de seguridad para movilización temprana según valores de laboratorio. Ingresa los valores disponibles y selecciona la patología predominante.</p>
+
+      <!-- Dominio clínico -->
       <div class="calc-card">
-        <div class="calc-card-header"><span class="calc-card-header-icon">♥</span><span class="calc-card-title">Signos vitales y ventilación</span></div>
-        <div class="calc-card-body" id="scr-vitals-body">
-          <!-- Generado por JS -->
+        <div class="calc-card-header"><span class="calc-card-header-icon">📋</span><span class="calc-card-title">Patología predominante</span></div>
+        <div class="calc-card-body">
+          <div id="scr-dom-btns" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+        </div>
+      </div>
+
+      <!-- Tipo de movilización -->
+      <div class="calc-card">
+        <div class="calc-card-header"><span class="calc-card-header-icon">🏃</span><span class="calc-card-title">Tipo de movilización</span></div>
+        <div class="calc-card-body">
+          <div style="display:flex;gap:8px">
+            <button type="button" id="scr-mode-a" onclick="scrSetMode('a')" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:var(--accent);color:#fff;font-size:13px;font-weight:700">Activa</button>
+            <button type="button" id="scr-mode-s" onclick="scrSetMode('s')" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">Activo-asistida</button>
+          </div>
         </div>
       </div>
 
       <!-- Laboratorio -->
       <div class="calc-card">
-        <div class="calc-card-header"><span class="calc-card-header-icon">🧪</span><span class="calc-card-title">Laboratorio</span></div>
+        <div class="calc-card-header"><span class="calc-card-header-icon">🧪</span><span class="calc-card-title">Valores de laboratorio</span></div>
+        <div class="calc-card-body" id="scr-labs-body"></div>
+      </div>
+
+      <!-- Cambios dinámicos en 24h -->
+      <div class="calc-card">
+        <div class="calc-card-header"><span class="calc-card-header-icon">📉</span><span class="calc-card-title">Tendencia en 24 h</span></div>
         <div class="calc-card-body">
-          <div style="margin-bottom:8px">
-            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">PATOLOGÍA PREDOMINANTE</label>
-            <div id="scr-dom-btns" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-          </div>
-          <div style="margin-bottom:8px">
-            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">TIPO DE MOVILIZACIÓN</label>
-            <div style="display:flex;gap:6px">
-              <button type="button" id="scr-mode-a" onclick="scrSetMode('a')" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:var(--accent);color:#fff;font-size:13px;font-weight:700">Activa</button>
-              <button type="button" id="scr-mode-s" onclick="scrSetMode('s')" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">Activo-asistida</button>
-            </div>
-          </div>
-          <div id="scr-labs-body"></div>
-          <div style="margin-top:10px">
-            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">TRANSFUSIÓN EN CURSO</label>
-            <div id="scr-tx-body"></div>
-          </div>
+          <p style="font-size:12px;color:var(--text3);margin:0 0 10px;line-height:1.5">Contraindica la movilización independientemente del valor absoluto.</p>
+          <label style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+            <input type="checkbox" id="scr-chk-hb" style="width:20px;height:20px;accent-color:var(--accent)" onchange="scrCalc()">
+            <span>Caída Hb ≥ 2 g/dL en las últimas 24 h</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+            <input type="checkbox" id="scr-chk-plt" style="width:20px;height:20px;accent-color:var(--accent)" onchange="scrCalc()">
+            <span>Caída plaquetas ≥ 20% en las últimas 24 h</span>
+          </label>
         </div>
       </div>
 
-      <!-- Ítems clínicos colapsables -->
-      <div id="scr-items-body"></div>
+      <!-- Transfusión en curso -->
+      <div class="calc-card">
+        <div class="calc-card-header"><span class="calc-card-header-icon">🩸</span><span class="calc-card-title">Transfusión en curso</span></div>
+        <div class="calc-card-body">
+          <p style="font-size:12px;color:var(--text3);margin:0 0 8px;line-height:1.5">Esperar término de la transfusión antes de iniciar movilización.</p>
+          <label style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+            <input type="checkbox" id="scr-tx-rbc" style="width:20px;height:20px;accent-color:var(--accent)" onchange="scrCalc()">
+            <span>Glóbulos rojos en curso</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+            <input type="checkbox" id="scr-tx-plt2" style="width:20px;height:20px;accent-color:var(--accent)" onchange="scrCalc()">
+            <span>Plaquetas en curso</span>
+          </label>
+          <label style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+            <input type="checkbox" id="scr-tx-pls" style="width:20px;height:20px;accent-color:var(--accent)" onchange="scrCalc()">
+            <span>Plasma en curso</span>
+          </label>
+        </div>
+      </div>
 
-      <button onclick="scrReset()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-size:14px;margin-bottom:10px">↺ Limpiar todo</button>
+      <button onclick="scrReset()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-size:14px;margin-bottom:8px">↺ Limpiar todo</button>
 
       <div style="font-size:11px;color:var(--text3);padding-bottom:10px;line-height:1.6">
-        <strong>Fuentes:</strong> Hodgson CL et al. Crit Care 2014 · Enriquez Popayan AM et al. Crit Care Sci 2026 · Sepúlveda P et al. Crit Care Sci 2025 · Conceição TM et al. Rev Bras Ter Intensiva 2017 · Rawal H et al. CHEST 2023.
+        <strong>Fuente:</strong> Enriquez Popayan AM et al. Safety recommendations on laboratory and blood count values for early mobilization in critically ill adults: an expert consensus. <em>Crit Care Sci.</em> 2026;38:e20260058. Delphi modificado · 24 expertos · 8 rondas · ≥85% acuerdo.
       </div>
     </div>
   </div>
 
-  <!-- Veredicto fijo dentro del screen -->
-  <div id="scr-verdict" style="position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px 20px;display:none">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:600px;margin:0 auto">
-      <div id="scr-t-bed" style="border-radius:10px;padding:10px 12px;background:var(--surface2);border-left:5px solid var(--border)">
-        <div style="font-size:11px;color:var(--text3)">Ejercicio en cama</div>
-        <div id="scr-bed-val" style="font-weight:700;font-size:14px;margin-top:2px">Sin datos</div>
+  <!-- Veredicto fijo -->
+  <div id="scr-verdict" style="position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px 18px;display:none">
+    <div style="max-width:600px;margin:0 auto">
+      <div id="scr-verdict-box" style="border-radius:10px;padding:12px 14px;background:var(--surface2);border-left:5px solid var(--border)">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:3px">Recomendación</div>
+        <div id="scr-verdict-val" style="font-weight:700;font-size:15px">Sin datos</div>
       </div>
-      <div id="scr-t-out" style="border-radius:10px;padding:10px 12px;background:var(--surface2);border-left:5px solid var(--border)">
-        <div style="font-size:11px;color:var(--text3)">Fuera de cama</div>
-        <div id="scr-out-val" style="font-weight:700;font-size:14px;margin-top:2px">Sin datos</div>
-      </div>
+      <div id="scr-flags" style="margin-top:7px;font-size:12px;line-height:1.6"></div>
     </div>
-    <button onclick="document.getElementById('scr-reasons-box').style.display=document.getElementById('scr-reasons-box').style.display==='none'?'block':'none'" style="font-size:12px;background:none;border:0;color:var(--accent);padding:6px 0 0;text-decoration:underline;cursor:pointer">Ver motivos</button>
-    <div id="scr-reasons-box" style="display:none;max-height:30vh;overflow-y:auto;font-size:12px;margin-top:4px" id="scr-reasons"></div>
   </div>
 </div>
 
@@ -2047,226 +2069,225 @@ function calcSTS30(){
 // === TM6M ===
 /* ===== SCREENING MOVILIZACIÓN TEMPRANA ===== */
 (function(){
-const RANK={g:0,y:1,r:2};
-const worst=(a,b)=>!a?b:!b?a:(RANK[a]>=RANK[b]?a:b);
-const SRC={H:"Hodgson 2014",E:"Enriquez Popayan 2026",S:"Sepúlveda 2025",C:"Conceição 2017",R:"Rawal 2023"};
-const srcTxt=s=>s.split("").map(k=>SRC[k]).join(", ");
 const $=id=>document.getElementById(id);
 const scrNum=s=>{if(s==null)return null;s=String(s).trim().replace(",",".");if(s==="")return null;const v=parseFloat(s);return isFinite(v)?v:null;};
+const C={g:"#22C55E",y:"#F59E0B",r:"#EF4444"};
 
-const VIT=[
-  {id:"svit_fio2",t:"FiO₂",u:"",r:"Verde ≤0,6. Rojo >0,8"},
-  {id:"svit_spo2",t:"SpO₂",u:"%",r:"Verde ≥90"},
-  {id:"svit_fr",t:"FR",u:"rpm",r:"Verde ≤30. Rojo >40 o <5"},
-  {id:"svit_peep",t:"PEEP",u:"cmH₂O",r:"Verde ≤10. Rojo >14"},
-  {id:"svit_fc",t:"FC",u:"lpm",r:"Rango 40–130"},
-  {id:"svit_pam",t:"PAM",u:"mmHg",r:"Rango 65–110"}
-];
-const scrVit={};
-
-const DOMAINS={
-  resp:{n:"Respiratoria"},cv:{n:"Cardiovascular"},qx:{n:"Quirúrgica"},
-  ren:{n:"Renal"},hem:{n:"Hemato/inmuno"},neu:{n:"Neurológica"}
+// Dominios clínicos
+const DOMS_I18N={
+  resp:{es:"Respiratoria",en:"Respiratory",pt:"Respiratória"},
+  cv:  {es:"Cardiovascular",en:"Cardiovascular",pt:"Cardiovascular"},
+  qx:  {es:"Quirúrgica",en:"Surgical",pt:"Cirúrgica"},
+  ren: {es:"Renal",en:"Renal",pt:"Renal"},
+  hem: {es:"Hemato/inmuno",en:"Hemato/immunol.",pt:"Hemato/imunol."},
+  neu: {es:"Neurológica",en:"Neurological",pt:"Neurológica"}
 };
-const P20={a:[20000,null],s:[20000,null],c:{le:20000}},P40={a:[40000,null],s:[40000,null],c:{le:40000}};
-const H77={a:[7,null],s:[7,null],c:{le:7}},H87={a:[8,null],s:[7,null],c:{le:7}};
-const G={le:60,ge:250},PHc={le:7.24},K={le:3.0,ge:5.5};
-const DOM_CFG={
-  resp:{plt:P20,hb:H77,lac:{a:[0,3],s:[0,3],c:{ge:3}},glu:{a:[70,180],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}},
-  cv:{plt:P40,hb:H87,lac:{a:[0,2],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.35,7.45],c:PHc},k:{a:[3.5,5],s:[3.5,5],c:K}},
-  qx:{plt:P40,hb:H87,lac:{a:[0,2],s:[0,2],c:{ge:2}},glu:{a:[70,140],s:[70,180],c:G},inr:{a:[0.8,1.5],s:[0.8,1.5],c:{ge:1.6}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}},
-  ren:{plt:P20,hb:H77,lac:{a:[0,3],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,180],c:G},inr:{a:[0.8,3],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc},k:{a:[3.5,5],s:[3.0,5],c:K}},
-  hem:{plt:P20,hb:H77,lac:{a:[0,2],s:[0,2],c:{ge:2}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.35,7.45],c:PHc}},
-  neu:{plt:P20,hb:H77,lac:{a:[0,2],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,1.5],c:{ge:1.6}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}}
+function scrDomName(k){return(DOMS_I18N[k]&&DOMS_I18N[k][appLang])||DOMS_I18N[k].es;}
+// Alias para compatibilidad con código que usa DOMS.X.n
+const DOMS=Object.fromEntries(Object.entries(DOMS_I18N).map(([k,v])=>[k,{get n(){return v[appLang]||v.es;}}]));
+
+// Parámetros de laboratorio por dominio y modo (a=activa, s=activo-asistida)
+// Formato: { safe:[min,max], contra:{le?,ge?} }
+// safe: rango seguro para iniciar; contra: contraindica (le=≤, ge=≥)
+const CFG={
+  resp:{
+    plt:{a:{safe:[20000,null],contra:{le:20000}},  s:{safe:[20000,null],contra:{le:20000}}},
+    hb: {a:{safe:[7,null],  contra:{le:7}},         s:{safe:[7,null],  contra:{le:7}}},
+    lac:{a:{safe:[0,3],     contra:{ge:3}},          s:{safe:[0,3],    contra:{ge:3}}},
+    glu:{a:{safe:[70,180],  contra:{le:60,ge:250}},  s:{safe:[70,140], contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,1.5], contra:{ge:3.1}},        s:{safe:[0.8,3],  contra:{ge:3.1}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.24,7.45],contra:{le:7.24}}}
+  },
+  cv:{
+    plt:{a:{safe:[40000,null],contra:{le:40000}},  s:{safe:[40000,null],contra:{le:40000}}},
+    hb: {a:{safe:[8,null],   contra:{le:7}},        s:{safe:[7,null],   contra:{le:7}}},
+    lac:{a:{safe:[0,2],      contra:{ge:3}},         s:{safe:[0,3],     contra:{ge:3}}},
+    glu:{a:{safe:[70,140],   contra:{le:60,ge:250}}, s:{safe:[70,140],  contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,1.5],  contra:{ge:3.1}},       s:{safe:[0.8,3],   contra:{ge:3.1}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.35,7.45],contra:{le:7.24}}},
+    k:  {a:{safe:[3.5,5],    contra:{le:3.0,ge:5.5}},s:{safe:[3.5,5],   contra:{le:3.0,ge:5.5}}}
+  },
+  qx:{
+    plt:{a:{safe:[40000,null],contra:{le:40000}},  s:{safe:[40000,null],contra:{le:40000}}},
+    hb: {a:{safe:[8,null],   contra:{le:7}},        s:{safe:[7,null],   contra:{le:7}}},
+    lac:{a:{safe:[0,2],      contra:{ge:2}},         s:{safe:[0,2],     contra:{ge:2}}},
+    glu:{a:{safe:[70,140],   contra:{le:60,ge:250}}, s:{safe:[70,180],  contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,1.5],  contra:{ge:1.6}},       s:{safe:[0.8,1.5], contra:{ge:1.6}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.24,7.45],contra:{le:7.24}}}
+  },
+  ren:{
+    plt:{a:{safe:[20000,null],contra:{le:20000}},  s:{safe:[20000,null],contra:{le:20000}}},
+    hb: {a:{safe:[7,null],   contra:{le:7}},        s:{safe:[7,null],   contra:{le:7}}},
+    lac:{a:{safe:[0,3],      contra:{ge:3}},         s:{safe:[0,3],     contra:{ge:3}}},
+    glu:{a:{safe:[70,140],   contra:{le:60,ge:250}}, s:{safe:[70,180],  contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,3],    contra:{ge:3.1}},       s:{safe:[0.8,3],   contra:{ge:3.1}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.24,7.45],contra:{le:7.24}}},
+    k:  {a:{safe:[3.5,5],    contra:{le:3.0,ge:5.5}},s:{safe:[3.0,5],   contra:{le:3.0,ge:5.5}}}
+  },
+  hem:{
+    plt:{a:{safe:[20000,null],contra:{le:20000}},  s:{safe:[20000,null],contra:{le:20000}}},
+    hb: {a:{safe:[7,null],   contra:{le:7}},        s:{safe:[7,null],   contra:{le:7}}},
+    lac:{a:{safe:[0,2],      contra:{ge:2}},         s:{safe:[0,2],     contra:{ge:2}}},
+    glu:{a:{safe:[70,140],   contra:{le:60,ge:250}}, s:{safe:[70,140],  contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,1.5],  contra:{ge:3.1}},       s:{safe:[0.8,3],   contra:{ge:3.1}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.35,7.45],contra:{le:7.24}}}
+  },
+  neu:{
+    plt:{a:{safe:[20000,null],contra:{le:20000}},  s:{safe:[20000,null],contra:{le:20000}}},
+    hb: {a:{safe:[7,null],   contra:{le:7}},        s:{safe:[7,null],   contra:{le:7}}},
+    lac:{a:{safe:[0,2],      contra:{ge:3}},         s:{safe:[0,3],     contra:{ge:3}}},
+    glu:{a:{safe:[70,140],   contra:{le:60,ge:250}}, s:{safe:[70,140],  contra:{le:60,ge:250}}},
+    inr:{a:{safe:[0.8,1.5],  contra:{ge:1.6}},       s:{safe:[0.8,1.5], contra:{ge:1.6}}},
+    ph: {a:{safe:[7.35,7.45],contra:{le:7.24}},      s:{safe:[7.24,7.45],contra:{le:7.24}}}
+  }
 };
-const PARAMS={plt:{n:"Plaquetas",u:"/µL"},hb:{n:"Hemoglobina",u:"g/dL"},lac:{n:"Lactato",u:"mmol/L"},glu:{n:"Glicemia",u:"mg/dL"},inr:{n:"INR",u:""},ph:{n:"pH",u:""},k:{n:"Potasio",u:"mmol/L"}};
-let scrDom="resp",scrMode="a";
-const scrVals={},scrTx={};
 
-const ITEMS=[
-  {s:"resp",k:"chk",id:"si_prono",t:"En posición prono",c:"rr",src:"H"},
-  {s:"resp",k:"chk",id:"si_vafo",t:"Ventilación de alta frecuencia oscilatoria",c:"yr",src:"H"},
-  {s:"resp",k:"chk",id:"si_async",t:"Asincronía paciente-ventilador",c:"yy",src:"HS"},
-  {s:"cv",k:"sel",id:"si_ritmo",t:"Ritmo cardíaco",src:"H",o:[
-    ["Sinusal o estable sin arritmia","gg"],
-    ["Taquiarritmia estable 120–150","yy"],
-    ["Taquiarritmia >150 o arritmia nueva","yr"],
-    ["Bradicardia que requiere tratamiento","rr"]]},
-  {s:"cv",k:"chk",id:"si_vaUp",t:"Dosis de vasoactivo en aumento (últimas 2 h)",c:"yr",src:"HCR"},
-  {s:"cv",k:"chk",id:"si_shock",t:"Shock con lactato >4 mmol/L",c:"yy",src:"H"},
-  {s:"cv",k:"chk",id:"si_tvp",t:"TVP o TEP aguda conocida/sospechada",c:"yy",src:"H"},
-  {s:"cv",k:"chk",id:"si_ecmoF",t:"ECMO femoral o subclavia",c:"gr",src:"H"},
-  {s:"cv",k:"chk",id:"si_bcia",t:"Balón de contrapulsación intraaórtico femoral",c:"gr",src:"H"},
-  {s:"neu",k:"sel",id:"si_rass",t:"RASS",src:"H",o:[
-    ["−1 a +1","gg"],
-    ["−2 o +2 (sedación leve / agitado)","yy"],
-    ["< −2 (sedación profunda)","yr"],
-    ["> +2 (muy agitado / combativo)","rr"]]},
-  {s:"neu",k:"sel",id:"si_cam",t:"CAM-ICU",src:"H",o:[
-    ["Negativo","gg"],
-    ["Positivo, obedece órdenes","gy"],
-    ["Positivo, no obedece órdenes","yy"]]},
-  {s:"neu",k:"chk",id:"si_hic",t:"Manejo activo de HIC con PIC fuera de rango",c:"rr",src:"HR"},
-  {s:"neu",k:"chk",id:"si_conv",t:"Convulsiones no controladas",c:"rr",src:"H"},
-  {s:"otr",k:"chk",id:"si_fx",t:"Fractura mayor inestable",c:"yr",src:"HCRS"},
-  {s:"otr",k:"chk",id:"si_sang",t:"Sangrado activo no controlado",c:"rr",src:"HCRS"},
-  {s:"otr",k:"chk",id:"si_sheath",t:"Introductores (sheaths) femorales",c:"yr",src:"H"},
-  {s:"exc",k:"chk",id:"si_bnm",t:"Bloqueo neuromuscular en curso",c:"rr",src:"CR"},
-  {s:"exc",k:"chk",id:"si_pcr",t:"PCR en las últimas 24 h",c:"rr",src:"R"},
-  {s:"exc",k:"chk",id:"si_reposo",t:"Indicación médica de reposo en cama",c:"rr",src:"R"}
-];
-const scrSt={};
-const SEC_NAMES={resp:"Respiratorio",cv:"Cardiovascular y dispositivos",neu:"Neurológico",otr:"Quirúrgico y otros",exc:"Exclusiones"};
-const VERD={g:"✅ Bajo riesgo",y:"⚠️ Precaución",r:"🔴 No movilizar sin autorización"};
-const VERD_COLOR={g:"#22C55E",y:"#F59E0B",r:"#EF4444"};
-const BORDER_COLOR={g:"#22C55E",y:"#F59E0B",r:"#EF4444"};
+const PARAMS_I18N={
+  plt:{es:"Plaquetas",en:"Platelets",pt:"Plaquetas"},
+  hb: {es:"Hemoglobina",en:"Hemoglobin",pt:"Hemoglobina"},
+  lac:{es:"Lactato",en:"Lactate",pt:"Lactato"},
+  glu:{es:"Glicemia",en:"Blood glucose",pt:"Glicemia"},
+  inr:{es:"INR",en:"INR",pt:"INR"},
+  ph: {es:"pH arterial",en:"Arterial pH",pt:"pH arterial"},
+  k:  {es:"Potasio",en:"Potassium",pt:"Potássio"}
+};
+const PARAMS_BASE={
+  plt:{u:"/µL",ph:"20000"},
+  hb: {u:"g/dL",ph:"9"},
+  lac:{u:"mmol/L",ph:"1.5"},
+  glu:{u:"mg/dL",ph:"120"},
+  inr:{u:"",ph:"1.2"},
+  ph: {u:"",ph:"7.38"},
+  k:  {u:"mmol/L",ph:"4.0"}
+};
+const PARAMS=Object.fromEntries(Object.entries(PARAMS_BASE).map(([k,v])=>[k,{...v,get n(){return(PARAMS_I18N[k]&&PARAMS_I18N[k][appLang])||PARAMS_I18N[k].es;}}]));
 
-function nf(x){return new Intl.NumberFormat("es-CL",{maximumFractionDigits:2}).format(x);}
-const pltNorm=v=>v==null?null:(v<2000?v*1000:v);
-const rangeTxt=r=>r[1]==null?"≥"+nf(r[0]):r[0]===0?"≤"+nf(r[1]):nf(r[0])+"–"+nf(r[1]);
-const contraTxt=c=>[c.le!=null?"≤"+nf(c.le):null,c.ge!=null?"≥"+nf(c.ge):null].filter(Boolean).join(" o ");
+let scrDom="resp", scrMode="a";
+const scrVals={};
 
-function scrBuildVitals(){
-  const el=$("scr-vitals-body"); if(!el) return;
-  el.innerHTML=VIT.map(v=>`
-    <div style="display:grid;grid-template-columns:12px 1fr 110px;gap:6px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--border)">
-      <span id="sdv-${v.id}" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--border);flex:none"></span>
-      <label style="font-weight:600;font-size:13px" for="${v.id}">${v.t}<br><span style="font-size:11px;color:var(--text3);font-weight:400">${v.r}</span></label>
-      <div style="display:flex;align-items:center;gap:4px">
-        <input id="${v.id}" data-svit="${v.id}" inputmode="decimal" autocomplete="off"
-          style="width:100%;font-size:14px;text-align:right;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--input-bg,var(--surface2));color:var(--text)">
-        <span style="font-size:11px;color:var(--text3);min-width:28px">${v.u}</span>
-      </div>
-    </div>`).join("");
+function nf(x,d=1){return new Intl.NumberFormat("es-CL",{maximumFractionDigits:d}).format(x);}
+function pltNorm(v){return v==null?null:(v<2000?v*1000:v);}
+
+function rangeTxt(safe){
+  const [lo,hi]=safe;
+  if(hi==null) return "≥"+nf(lo,0);
+  if(lo===0) return "≤"+nf(hi,0);
+  return nf(lo,0)+"–"+nf(hi,0);
+}
+function contraTxt(c){
+  const parts=[];
+  if(c.le!=null) parts.push("≤"+nf(c.le,0));
+  if(c.ge!=null) parts.push("≥"+nf(c.ge,0));
+  return parts.join(" o ");
 }
 
 function scrBuildDom(){
   const el=$("scr-dom-btns"); if(!el) return;
-  el.innerHTML=Object.entries(DOMAINS).map(([k,d])=>`
+  el.innerHTML=Object.entries(DOMS).map(([k,d])=>`
     <button type="button" onclick="scrSetDom('${k}')" id="scr-dom-${k}"
-      style="padding:7px 11px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;
-      background:${k===scrDom?'var(--accent)':'var(--surface)'};color:${k===scrDom?'#fff':'var(--text)'}">${d.n}</button>`).join("");
+      style="padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;
+      background:${k===scrDom?'var(--accent)':'var(--surface)'};color:${k===scrDom?'#fff':'var(--text)'}">
+      ${d.n}</button>`).join("");
 }
 
 function scrBuildLabs(){
   const el=$("scr-labs-body"); if(!el) return;
-  const cfg=DOM_CFG[scrDom];
-  el.innerHTML=Object.keys(cfg).map(k=>{
-    const R=cfg[k][scrMode];
-    const rr=k==="lac"?[R[0],R[1]]:R;
-    const cc=cfg[k].c;
-    return `<div style="display:grid;grid-template-columns:12px 1fr 110px;gap:6px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--border)">
-      <span id="sdl-${k}" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--border);flex:none"></span>
-      <label style="font-weight:600;font-size:13px" for="slv-${k}">${PARAMS[k].n}<br>
-        <span style="font-size:11px;color:var(--text3);font-weight:400">Apto ${rangeTxt(rr)}. Contra ${contraTxt(cc)}</span></label>
-      <div style="display:flex;align-items:center;gap:4px">
-        <input id="slv-${k}" data-slab="${k}" inputmode="decimal" autocomplete="off" value="${scrVals[k]??""}"
-          style="width:100%;font-size:14px;text-align:right;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--input-bg,var(--surface2));color:var(--text)">
-        <span style="font-size:11px;color:var(--text3);min-width:28px">${PARAMS[k].u}</span>
-      </div>
+  const domCfg=CFG[scrDom];
+  el.innerHTML=Object.keys(domCfg).map(k=>{
+    const p=PARAMS[k];
+    const cfg=domCfg[k][scrMode];
+    const sv=scrVals[k]!==undefined?scrVals[k]:"";
+    return `<div style="display:grid;grid-template-columns:14px 1fr 100px;gap:6px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--border)">
+      <span id="sdl-${k}" style="display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--border);flex:none"></span>
+      <label style="font-weight:600;font-size:13px" for="slv-${k}">${p.n} <span style="font-size:11px;color:var(--text3);font-weight:400">${p.u}</span>
+        <br><span style="font-size:11px;color:var(--text3);font-weight:400">${appLang==='en'?'Safe:':appLang==='pt'?'Seguro:':'Seguro:'} ${rangeTxt(cfg.safe)} · ${appLang==='en'?'Contra:':appLang==='pt'?'Contra:':'Contra:'} ${contraTxt(cfg.contra)}</span>
+      </label>
+      <input id="slv-${k}" data-slab="${k}" inputmode="decimal" autocomplete="off" value="${sv}" placeholder="${p.ph}"
+        style="font-size:14px;text-align:right;padding:8px;border:1.5px solid var(--border);border-radius:8px;background:var(--input-bg,var(--surface2));color:var(--text);width:100%">
     </div>`;
   }).join("");
-  // transfusión
-  const tx=$("scr-tx-body"); if(tx)
-    tx.innerHTML=["Glóbulos rojos","Plaquetas","Plasma"].map(n=>`
-      <label style="display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
-        <input type="checkbox" data-stx="${n}" ${scrTx[n]?"checked":""} style="width:18px;height:18px;accent-color:var(--accent)">${n}
-        <span style="font-size:11px;color:var(--text3)">(esperar término)</span></label>`).join("");
 }
 
-function scrBuildItems(){
-  const el=$("scr-items-body"); if(!el) return;
-  let html="";
-  for(const [sec,name] of Object.entries(SEC_NAMES)){
-    const its=ITEMS.filter(i=>i.s===sec);
-    html+=`<div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">●</span><span class="calc-card-title">${name}</span></div><div class="calc-card-body">
-      <div style="display:flex;gap:8px;font-size:11px;color:var(--text3);margin-bottom:8px"><span>● izq: en cama</span><span>● der: fuera de cama</span></div>`;
-    for(const it of its){
-      if(it.k==="chk"){
-        html+=`<label style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--border);cursor:pointer">
-          <input type="checkbox" data-sit="${it.id}" ${scrSt[it.id]?"checked":""} style="width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--accent)">
-          <span style="font-size:13px;flex:1">${it.t}<br><span style="font-size:11px;color:var(--text3)">${srcTxt(it.src)}</span></span>
-          <span style="display:flex;gap:3px;align-items:center;flex:none">
-            <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.c[0]==='g'?'#22C55E':it.c[0]==='y'?'#F59E0B':'#EF4444'}"></span>
-            <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.c[1]==='g'?'#22C55E':it.c[1]==='y'?'#F59E0B':'#EF4444'}"></span>
-          </span></label>`;
-      } else {
-        html+=`<div style="padding:9px 0;border-top:1px solid var(--border)">
-          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px">${it.t} <span style="font-size:11px;color:var(--text3);font-weight:400">${srcTxt(it.src)}</span></label>
-          <select data-sit="${it.id}" style="width:100%;font-size:13px;padding:9px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text)">
-            <option value="">Sin dato</option>${it.o.map((o,i)=>`<option value="${i}" ${scrSt[it.id]==i?'selected':''}>${o[0]}</option>`).join("")}
-          </select></div>`;
-      }
-    }
-    html+=`</div></div>`;
-  }
-  el.innerHTML=html;
-}
-
-function scrEvalVitals(){
-  const out=[];
-  const F=(id,b,o,t)=>{out.push({s:"vit",b,o,t,src:"H"});const d=$("sdv-"+id);if(d){d.style.background=BORDER_COLOR[worst(b,o)];d.style.borderColor=BORDER_COLOR[worst(b,o)];}};
-  let x=scrNum(scrVit["svit_fio2"]);
-  if(x!=null){const fx=x>1?x/100:x;if(fx>0.8)F("svit_fio2","r","r",`FiO₂ ${nf(fx)}: exclusión de protocolo`);else if(fx>0.6)F("svit_fio2","y","y",`FiO₂ ${nf(fx)} (>0,6)`);else F("svit_fio2","g","g",`FiO₂ ${nf(fx)}`);}
-  x=scrNum(scrVit["svit_spo2"]);if(x!=null){if(x<90)F("svit_spo2","y","r",`SpO₂ ${nf(x)} % (<90)`);else F("svit_spo2","g","g",`SpO₂ ${nf(x)} %`);}
-  x=scrNum(scrVit["svit_fr"]);if(x!=null){if(x>40||x<5)F("svit_fr","r","r",`FR ${nf(x)} rpm: exclusión`);else if(x>30)F("svit_fr","y","y",`FR ${nf(x)} rpm (>30)`);else F("svit_fr","g","g",`FR ${nf(x)} rpm`);}
-  x=scrNum(scrVit["svit_peep"]);if(x!=null){if(x>14)F("svit_peep","r","r",`PEEP ${nf(x)}: exclusión`);else if(x>10)F("svit_peep","y","y",`PEEP ${nf(x)} (>10)`);else F("svit_peep","g","g",`PEEP ${nf(x)}`);}
-  x=scrNum(scrVit["svit_fc"]);if(x!=null){if(x>150)F("svit_fc","y","r",`FC ${nf(x)} lpm (>150)`);else if(x>130||x<40)F("svit_fc","y","y",`FC ${nf(x)}, fuera 40–130`);else F("svit_fc","g","g",`FC ${nf(x)} lpm`);}
-  x=scrNum(scrVit["svit_pam"]);if(x!=null){if(x<65||x>110)F("svit_pam","y","y",`PAM ${nf(x)} mmHg, fuera 65–110`);else F("svit_pam","g","g",`PAM ${nf(x)} mmHg`);}
-  return out;
-}
-
-function scrEvalLab(){
-  const cfg=DOM_CFG[scrDom],out=[];
-  const add=(c,t)=>out.push({s:"lab",b:c,o:c,t,src:"E"});
-  for(const k of Object.keys(cfg)){
-    const c=cfg[k],R=c[scrMode];
-    let v=scrNum(scrVals[k]);const dot=$("sdl-"+k);if(dot){dot.style.background="";dot.style.borderColor="";}
-    if(k==="plt")v=pltNorm(v);
-    if(v==null)continue;
-    const x=c.c;const shown=k==="plt"?nf(v):nf(scrNum(scrVals[k]));
-    if((x.le!=null&&v<=x.le)||(x.ge!=null&&v>=x.ge)){if(dot){dot.style.background="#EF4444";dot.style.borderColor="#EF4444";}add("r",`${PARAMS[k].n} ${shown}: contraindicación`);}
-    else if(v>=R[0]&&(R[1]==null||v<=R[1])){if(dot){dot.style.background="#22C55E";dot.style.borderColor="#22C55E";}add("g",`${PARAMS[k].n} ${shown}`);}
-    else{if(dot){dot.style.background="#F59E0B";dot.style.borderColor="#F59E0B";}add("y",`${PARAMS[k].n} ${shown}: zona intermedia`);}
-  }
-  const t=Object.keys(scrTx).filter(n=>scrTx[n]);
-  if(t.length)add("r",`Transfusión en curso (${t.join(", ")})`);
-  return out;
-}
-
-function scrEvalItems(){
-  const out=[];
-  for(const it of ITEMS){
-    const v=scrSt[it.id];if(v==null||v===""||v===false)continue;
-    let c,t;
-    if(it.k==="chk"){c=it.c;t=it.t;}else{const o=it.o[+v];c=o[1];t=`${it.t}: ${o[0]}`;}
-    out.push({s:it.s,b:c[0],o:c[1],t,src:it.src});
-  }
-  return out;
+function dotColor(id,color){
+  const d=$("sdl-"+id);
+  if(d){d.style.background=color;d.style.borderColor=color;}
 }
 
 function scrCalc(){
-  const all=[...scrEvalVitals(),...scrEvalLab(),...scrEvalItems()];
-  let B=null,O=null;
-  for(const x of all){B=worst(B,x.b);O=worst(O,x.o);}
-  const vd=$("scr-verdict");const tb=$("scr-t-bed");const to=$("scr-t-out");
-  const bv=$("scr-bed-val");const ov=$("scr-out-val");
-  if(!vd)return;
-  const hasData=all.length>0;
+  const domCfg=CFG[scrDom];
+  const flags=[];
+  let worst="g";
+  const rank={g:0,y:1,r:2};
+  const bump=c=>{if(rank[c]>rank[worst])worst=c;};
+
+  // Evaluar laboratorio
+  for(const k of Object.keys(domCfg)){
+    let v=scrNum(scrVals[k]);
+    if(k==="plt") v=pltNorm(v);
+    dotColor(k,"");
+    if(v==null)continue;
+    const cfg=domCfg[k][scrMode];
+    const [lo,hi]=cfg.safe;
+    const ct=cfg.contra;
+    const shown=k==="plt"?nf(v,0)+" /µL":nf(v)+(PARAMS[k].u?" "+PARAMS[k].u:"");
+    const contraLbl=appLang==='en'?'CONTRAINDICATION':appLang==='pt'?'CONTRAINDICAÇÃO':'CONTRAINDICACIÓN';
+    const midLbl=appLang==='en'?'intermediate zone (evaluate)':appLang==='pt'?'zona intermediária (avaliar)':'zona intermedia (evaluar)';
+    if((ct.le!=null&&v<=ct.le)||(ct.ge!=null&&v>=ct.ge)){
+      dotColor(k,C.r);bump("r");
+      flags.push({c:"r",t:`🔴 ${PARAMS[k].n} ${shown} — ${contraLbl}`});
+    } else if(v>=(lo??-Infinity)&&(hi==null||v<=hi)){
+      dotColor(k,C.g);
+      // sin flag si seguro
+    } else {
+      dotColor(k,C.y);bump("y");
+      flags.push({c:"y",t:`⚠️ ${PARAMS[k].n} ${shown} — ${midLbl}`});
+    }
+  }
+
+  // Cambios dinámicos en 24h
+  const hbDropLbl=appLang==='en'?'🔴 Hb drop ≥2 g/dL in 24 h — CONTRAINDICATION':appLang==='pt'?'🔴 Queda de Hb ≥2 g/dL em 24 h — CONTRAINDICAÇÃO':'🔴 Caída Hb ≥2 g/dL en 24 h — CONTRAINDICACIÓN';
+  const pltDropLbl=appLang==='en'?'🔴 Platelets drop ≥20% in 24 h — CONTRAINDICATION':appLang==='pt'?'🔴 Queda de plaquetas ≥20% em 24 h — CONTRAINDICAÇÃO':'🔴 Caída plaquetas ≥20% en 24 h — CONTRAINDICACIÓN';
+  if($("scr-chk-hb")&&$("scr-chk-hb").checked){bump("r");flags.push({c:"r",t:hbDropLbl});}
+  if($("scr-chk-plt")&&$("scr-chk-plt").checked){bump("r");flags.push({c:"r",t:pltDropLbl});}
+
+  // Transfusión en curso
+  const txIds=["scr-tx-rbc","scr-tx-plt2","scr-tx-pls"];
+  const txNames=appLang==='en'?["red blood cells","platelets","plasma"]:appLang==='pt'?["hemácias","plaquetas","plasma"]:["glóbulos rojos","plaquetas","plasma"];
+  const txVerb=appLang==='en'?'transfusion in progress — wait until completion':appLang==='pt'?'transfusão em curso — aguardar término':'transfusión en curso — esperar término';
+  txIds.forEach((id,i)=>{if($(id)&&$(id).checked){bump("r");flags.push({c:"r",t:`🔴 ${txNames[i].charAt(0).toUpperCase()+txNames[i].slice(1)} ${txVerb}`});}});
+
+  // ¿Hay algún dato ingresado?
+  const domKeys=Object.keys(domCfg);
+  const hasData=domKeys.some(k=>{const v=scrNum(scrVals[k]);return v!=null;})||
+    flags.some(f=>f.c==="r"||f.c==="y");
+
+  const vd=$("scr-verdict"); if(!vd)return;
   vd.style.display=hasData?"block":"none";
-  if(bv)bv.textContent=B?VERD[B]:"Sin datos";
-  if(ov)ov.textContent=O?VERD[O]:"Sin datos";
-  if(tb){tb.style.borderLeftColor=B?BORDER_COLOR[B]:"var(--border)";tb.style.background=B?BORDER_COLOR[B]+"22":"var(--surface2)";}
-  if(to){to.style.borderLeftColor=O?BORDER_COLOR[O]:"var(--border)";to.style.background=O?BORDER_COLOR[O]+"22":"var(--surface2)";}
-  const flag=all.filter(x=>x.b!=="g"||x.o!=="g");
-  const rb=$("scr-reasons-box");
-  if(rb)rb.innerHTML=flag.length?flag.map(x=>`<div style="padding:4px 0;border-top:1px solid var(--border)">
-    <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${BORDER_COLOR[x.b]};margin-right:4px"></span>
-    <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${BORDER_COLOR[x.o]};margin-right:6px"></span>
-    ${x.t} <small style="color:var(--text3)">(${srcTxt(x.src)})</small></div>`).join(""):'<div>Sin alertas.</div>';
+
+  const vbox=$("scr-verdict-box");
+  const vval=$("scr-verdict-val");
+  const fbox=$("scr-flags");
+
+  const VERD={
+    g:{txt:appLang==='en'?'✅ Safe — may start mobilization':appLang==='pt'?'✅ Seguro — pode iniciar mobilização':'✅ Apto — puede iniciar movilización',col:C.g},
+    y:{txt:appLang==='en'?'⚠️ Caution — evaluate individually':appLang==='pt'?'⚠️ Precaução — avaliar individualmente':'⚠️ Precaución — evaluar individualmente',col:C.y},
+    r:{txt:appLang==='en'?'🔴 Contraindicated — do not mobilize':appLang==='pt'?'🔴 Contraindicado — não mobilizar':'🔴 Contraindicado — no movilizar',col:C.r}
+  };
+  const noAlerts=appLang==='en'?'No alerts for entered values.':appLang==='pt'?'Sem alertas nos valores inseridos.':'Sin alertas en los valores ingresados.';
+  if(vbox){vbox.style.borderLeftColor=VERD[worst].col;vbox.style.background=VERD[worst].col+"22";}
+  if(vval){vval.textContent=VERD[worst].txt;vval.style.color=VERD[worst].col;}
+  if(fbox){
+    fbox.innerHTML=flags.length
+      ? flags.map(f=>`<div style="padding:4px 0;border-top:1px solid var(--border)">${f.t}</div>`).join("")
+      : `<div style='color:var(--text3)'>${noAlerts}</div>`;
+  }
 }
 
-window.scrSetDom=function(d){scrDom=d;scrBuildDom();scrBuildLabs();scrCalc();};
+window.scrCalc=scrCalc;
+window.scrSetDom=function(d){
+  scrDom=d;
+  scrBuildDom();scrBuildLabs();scrCalc();
+};
 window.scrSetMode=function(m){
   scrMode=m;
   const a=$("scr-mode-a"),s=$("scr-mode-s");
@@ -2275,27 +2296,22 @@ window.scrSetMode=function(m){
   scrBuildLabs();scrCalc();
 };
 window.scrReset=function(){
-  [scrVit,scrVals,scrTx,scrSt].forEach(o=>{for(const k in o)delete o[k];});
-  scrBuildVitals();scrBuildDom();scrBuildLabs();scrBuildItems();scrCalc();
+  for(const k in scrVals)delete scrVals[k];
+  ["scr-chk-hb","scr-chk-plt","scr-tx-rbc","scr-tx-plt2","scr-tx-pls"].forEach(id=>{if($(id))$(id).checked=false;});
+  scrBuildDom();scrBuildLabs();scrCalc();
 };
 
 function scrInit(){
-  scrBuildVitals();scrBuildDom();scrBuildLabs();scrBuildItems();
+  scrBuildDom();scrBuildLabs();scrCalc();
   document.addEventListener("input",function(e){
-    const t=e.target,d=t.dataset;
-    if(d.svit){scrVit[d.svit]=t.value;scrCalc();}
-    else if(d.slab){scrVals[d.slab]=t.value;scrCalc();}
-    else if(d.stx){scrTx[d.stx]=t.checked;scrCalc();}
-    else if(d.sit){scrSt[d.sit]=t.type==="checkbox"?t.checked:t.value;scrCalc();}
-  });
-  document.addEventListener("change",function(e){
-    const t=e.target,d=t.dataset;
-    if(d.stx){scrTx[d.stx]=t.checked;scrCalc();}
-    else if(d.sit){scrSt[d.sit]=t.type==="checkbox"?t.checked:t.value;scrCalc();}
+    const d=e.target.dataset;
+    if(d.slab){scrVals[d.slab]=e.target.value;scrCalc();}
   });
 }
-// Inicializar cuando el screen sea visible
-const obs=new MutationObserver(()=>{if($("scr-vitals-body")&&!$("scr-vitals-body").children.length)scrInit();});
+
+const obs=new MutationObserver(()=>{
+  if($("scr-labs-body")&&!$("scr-labs-body").children.length)scrInit();
+});
 obs.observe(document.body,{childList:true,subtree:true});
 setTimeout(scrInit,500);
 })();
@@ -3011,6 +3027,42 @@ const UI_TRANSLATIONS={
     'FiO₂ estimada — Filtro TQT':'Estimated FiO₂ — TQT Filter',
     'FiO₂ Requerida para PaO₂ Objetivo':'Required FiO₂ for Target PaO₂',
     'Seleccione un flujo':'Select a flow','— Seleccionar flujo —':'— Select flow —',
+    // SCR Módulo
+    'Screening Lab. Movilización':'Lab. Mobilization Screening',
+    'Patología predominante':'Predominant pathology',
+    'Tipo de movilización':'Mobilization type',
+    'Activa':'Active','Activo-asistida':'Active-assisted',
+    'Valores de laboratorio':'Laboratory values',
+    'Tendencia en 24 h':'24 h trend',
+    'Contraindica la movilización independientemente del valor absoluto.':'Contraindicates mobilization regardless of the absolute value.',
+    'Caída Hb ≥ 2 g/dL en las últimas 24 h':'Hb drop ≥ 2 g/dL in the last 24 h',
+    'Caída plaquetas ≥ 20% en las últimas 24 h':'Platelet drop ≥ 20% in the last 24 h',
+    'Transfusión en curso':'Ongoing transfusion',
+    'Esperar término de la transfusión antes de iniciar movilización.':'Wait for transfusion completion before initiating mobilization.',
+    'Glóbulos rojos en curso':'Red blood cells ongoing',
+    'Plaquetas en curso':'Platelets ongoing',
+    'Plasma en curso':'Plasma ongoing',
+    '↺ Limpiar todo':'↺ Clear all',
+    'Recomendación':'Recommendation',
+    'Sin datos':'No data',
+    '✅ Apto — puede iniciar movilización':'✅ Safe — may initiate mobilization',
+    '⚠️ Precaución — evaluar individualmente':'⚠️ Caution — assess individually',
+    '🔴 Contraindicado — no movilizar':'🔴 Contraindicated — do not mobilize',
+    'Sin alertas en los valores ingresados.':'No alerts for the entered values.',
+    'Respiratoria':'Respiratory','Cardiovascular':'Cardiovascular','Quirúrgica':'Surgical',
+    'Renal':'Renal','Hemato/inmuno':'Hemato/immunol.','Neurológica':'Neurological',
+    'Plaquetas':'Platelets','Hemoglobina':'Hemoglobin','Lactato':'Lactate',
+    'Glicemia':'Glucose','pH arterial':'Arterial pH','Potasio':'Potassium',
+    'Seguro:':'Safe:','Contra:':'Contra:',
+    'zona intermedia (evaluar)':'borderline (assess)',
+    'CONTRAINDICACIÓN':'CONTRAINDICATION',
+    'Caída Hb ≥2 g/dL en 24 h — CONTRAINDICACIÓN':'Hb drop ≥2 g/dL in 24 h — CONTRAINDICATION',
+    'Caída plaquetas ≥20% en 24 h — CONTRAINDICACIÓN':'Platelet drop ≥20% in 24 h — CONTRAINDICATION',
+    'Transfusión de glóbulos rojos en curso — esperar término':'Red blood cell transfusion ongoing — wait for completion',
+    'Transfusión de plaquetas en curso — esperar término':'Platelet transfusion ongoing — wait for completion',
+    'Transfusión de plasma en curso — esperar término':'Plasma transfusion ongoing — wait for completion',
+    'Enriquez Popayan · Delphi 2026':'Enriquez Popayan · Delphi 2026',
+    'Screening Movilización':'Mobilization Screening',
   },
   pt:{
     // App general
@@ -3383,6 +3435,42 @@ const UI_TRANSLATIONS={
     'Oscuro':'Escuro','Claro':'Claro',
     'Favoritos':'Favoritos','Sin favoritos guardados':'Sem favoritos salvos',
     'TM6M — Test Marcha 6 min':'TC6M — Teste de Caminhada 6 min',
+    // SCR Módulo PT
+    'Screening Lab. Movilización':'Triagem Lab. Mobilização',
+    'Patología predominante':'Patologia predominante',
+    'Tipo de movilización':'Tipo de mobilização',
+    'Activa':'Ativa','Activo-asistida':'Ativa-assistida',
+    'Valores de laboratorio':'Valores laboratoriais',
+    'Tendencia en 24 h':'Tendência em 24 h',
+    'Contraindica la movilización independientemente del valor absoluto.':'Contraindica a mobilização independentemente do valor absoluto.',
+    'Caída Hb ≥ 2 g/dL en las últimas 24 h':'Queda de Hb ≥ 2 g/dL nas últimas 24 h',
+    'Caída plaquetas ≥ 20% en las últimas 24 h':'Queda de plaquetas ≥ 20% nas últimas 24 h',
+    'Transfusión en curso':'Transfusão em curso',
+    'Esperar término de la transfusión antes de iniciar movilización.':'Aguardar o término da transfusão antes de iniciar a mobilização.',
+    'Glóbulos rojos en curso':'Hemácias em curso',
+    'Plaquetas en curso':'Plaquetas em curso',
+    'Plasma en curso':'Plasma em curso',
+    '↺ Limpiar todo':'↺ Limpar tudo',
+    'Recomendación':'Recomendação',
+    'Sin datos':'Sem dados',
+    '✅ Apto — puede iniciar movilización':'✅ Seguro — pode iniciar mobilização',
+    '⚠️ Precaución — evaluar individualmente':'⚠️ Precaução — avaliar individualmente',
+    '🔴 Contraindicado — no movilizar':'🔴 Contraindicado — não mobilizar',
+    'Sin alertas en los valores ingresados.':'Sem alertas nos valores inseridos.',
+    'Respiratoria':'Respiratória','Quirúrgica':'Cirúrgica',
+    'Hemato/inmuno':'Hemato/imunol.','Neurológica':'Neurológica',
+    'Plaquetas':'Plaquetas','Hemoglobina':'Hemoglobina','Lactato':'Lactato',
+    'Glicemia':'Glicemia','pH arterial':'pH arterial','Potasio':'Potássio',
+    'Seguro:':'Seguro:','Contra:':'Contra:',
+    'zona intermedia (evaluar)':'zona intermediária (avaliar)',
+    'CONTRAINDICACIÓN':'CONTRAINDICAÇÃO',
+    'Caída Hb ≥2 g/dL en 24 h — CONTRAINDICACIÓN':'Queda de Hb ≥2 g/dL em 24 h — CONTRAINDICAÇÃO',
+    'Caída plaquetas ≥20% en 24 h — CONTRAINDICACIÓN':'Queda de plaquetas ≥20% em 24 h — CONTRAINDICAÇÃO',
+    'Transfusión de glóbulos rojos en curso — esperar término':'Transfusão de hemácias em curso — aguardar término',
+    'Transfusión de plaquetas en curso — esperar término':'Transfusão de plaquetas em curso — aguardar término',
+    'Transfusión de plasma en curso — esperar término':'Transfusão de plasma em curso — aguardar término',
+    'Enriquez Popayan · Delphi 2026':'Enriquez Popayan · Delphi 2026',
+    'Screening Movilización':'Triagem Mobilização',
   }
 };
 
@@ -3523,6 +3611,7 @@ function applyLanguage(){
   try{buildMRC();}catch(e){}
   try{buildMobility();}catch(e){}
   try{buildFSSICU();}catch(e){}
+  try{scrBuildDom();scrBuildLabs();scrCalc();}catch(e){}
   // Always re-apply pill AFTER DOM walker to prevent overwrite
   updateLangPill();
   // Re-inject card stars (titles may have changed with language)
