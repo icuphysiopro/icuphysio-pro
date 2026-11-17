@@ -332,8 +332,8 @@ body.light .module-card{background:#fff}
       <div class="module-card accent-blue" onclick="nav('vent')"><div class="module-card-icon">VM</div><div class="module-card-title">Ventilación Mecánica</div><div class="module-card-sub">IBW · IOx · DP · MP</div><span class="module-card-badge">M1</span></div>
       <div class="module-card accent-blue" onclick="navPro('adv')"><div class="module-card-icon">WN</div><div class="module-card-title">Weaning<span class="pro-badge">PRO</span></div><div class="module-card-sub">P0.1 · ΔPocc · Pmus · PTP</div><span class="module-card-badge">M2</span></div>
       <div class="module-card accent-blue" onclick="navPro('pav')"><div class="module-card-icon">PAV</div><div class="module-card-title">PAV+<span class="pro-badge">PRO</span></div><div class="module-card-sub">Pmuspeak · PPT · Criterios</div><span class="module-card-badge">M3</span></div>
-      <div class="module-card accent-purple" onclick="navPro('hfnc')"><div class="module-card-icon">ROX</div><div class="module-card-title">CNAF<span class="pro-badge">PRO</span></div><div class="module-card-sub">ROX Index · CAB-RSS</div><span class="module-card-badge">M4</span></div>
-      <div class="module-card accent-purple" onclick="navPro('niv')"><div class="module-card-icon">VNI</div><div class="module-card-title">VNI<span class="pro-badge">PRO</span></div><div class="module-card-sub">HACOR Score</div><span class="module-card-badge">M5</span></div>
+      <div class="module-card accent-purple" onclick="nav('hfnc')"><div class="module-card-icon">ROX</div><div class="module-card-title">CNAF</div><div class="module-card-sub">ROX Index · CAB-RSS</div><span class="module-card-badge">M4</span></div>
+      <div class="module-card accent-purple" onclick="nav('niv')"><div class="module-card-icon">VNI</div><div class="module-card-title">VNI</div><div class="module-card-sub">HACOR Score</div><span class="module-card-badge">M5</span></div>
     </div>
     
     <div class="module-section-label" style="margin-top:4px">Gasometría y Oxigenación</div>
@@ -354,7 +354,7 @@ body.light .module-card{background:#fff}
     <div class="module-grid">
       <div class="module-card accent-warn" onclick="nav('neuro')"><div class="module-card-icon">GCS</div><div class="module-card-title">Glasgow</div><div class="module-card-sub">GCS clásico</div></div>
       <div class="module-card accent-warn" onclick="nav('rass')"><div class="module-card-icon">RASS</div><div class="module-card-title">RASS</div><div class="module-card-sub">Sedación-Agitación</div></div>
-      <div class="module-card accent-warn" onclick="navPro('sas')"><div class="module-card-icon">SAS</div><div class="module-card-title">SAS<span class="pro-badge">PRO</span></div><div class="module-card-sub">Sedación</div></div>
+      <div class="module-card accent-warn" onclick="nav('sas')"><div class="module-card-icon">SAS</div><div class="module-card-title">SAS</div><div class="module-card-sub">Sedación</div></div>
       <div class="module-card accent-warn" onclick="navPro('cam')"><div class="module-card-icon">CAM</div><div class="module-card-title">CAM-ICU<span class="pro-badge">PRO</span></div><div class="module-card-sub">Delirium</div></div>
       <div class="module-card accent-warn" onclick="nav('s5q');buildS5Q()"><div class="module-card-icon">S5Q</div><div class="module-card-title">S5Q</div><div class="module-card-sub">Órdenes motoras</div></div>
     </div>
@@ -363,9 +363,9 @@ body.light .module-card{background:#fff}
       <div class="module-card-wide module-card" onclick="nav('dolor')"><div class="module-card-text"><div class="module-card-title">Evaluación del Dolor</div><div class="module-card-sub">CPOT · EVA</div></div><div style="color:var(--text3);font-size:18px">›</div></div>
     </div><div class="module-section-label" style="margin-top:4px">Escalas Motoras</div>
     <div class="module-grid">
-      <div class="module-card accent-blue" onclick="navPro('mrc')"><div class="module-card-icon">MRC</div><div class="module-card-title">MRC<span class="pro-badge">PRO</span></div><div class="module-card-sub">Fuerza muscular</div></div>
+      <div class="module-card accent-blue" onclick="nav('mrc')"><div class="module-card-icon">MRC</div><div class="module-card-title">MRC</div><div class="module-card-sub">Fuerza muscular</div></div>
       <div class="module-card accent-blue" onclick="navPro('mobility')"><div class="module-card-icon">IMS</div><div class="module-card-title">ICU Mobility<span class="pro-badge">PRO</span></div><div class="module-card-sub">Movilidad UCI</div></div>
-      <div class="module-card accent-blue" onclick="navPro('barthel')"><div class="module-card-icon">BTH</div><div class="module-card-title">Barthel<span class="pro-badge">PRO</span></div><div class="module-card-sub">Independencia funcional</div></div>
+      <div class="module-card accent-blue" onclick="nav('barthel')"><div class="module-card-icon">BTH</div><div class="module-card-title">Barthel</div><div class="module-card-sub">Independencia funcional</div></div>
       <div class="module-card accent-blue" onclick="navPro('sts')"><div class="module-card-icon">STS</div><div class="module-card-title">Sit-to-Stand<span class="pro-badge">PRO</span></div><div class="module-card-sub">5-STS · 30s-STS</div></div>
       <div class="module-card accent-blue" onclick="nav('fssicu');buildFSSICU()"><div class="module-card-icon">FSS</div><div class="module-card-title">FSS-ICU</div><div class="module-card-sub">Functional Status Score</div></div>
       <div class="module-card accent-blue" onclick="navPro('karvonen')"><div class="module-card-icon">FCR</div><div class="module-card-title">FC Reserva<span class="pro-badge">PRO</span></div><div class="module-card-sub">Karvonen</div></div>
@@ -4151,11 +4151,11 @@ document.addEventListener('DOMContentLoaded',init);
   border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
   overflow:hidden">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-9451800067984997~7554520871" crossorigin="anonymous"></script>
   <ins class="adsbygoogle"
     style="display:block;width:320px;height:50px"
-    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-    data-ad-slot="XXXXXXXXXX"
+    data-ad-client="ca-app-pub-9451800067984997"
+    data-ad-slot="8913055767"
     data-ad-format="banner"
     data-full-width-responsive="false"></ins>
   <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
