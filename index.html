@@ -2152,7 +2152,7 @@ const PARAMS_I18N={
   k:  {es:"Potasio",en:"Potassium",pt:"Potássio"}
 };
 const PARAMS_BASE={
-  plt:{u:"/µL",ph:"20000"},
+  plt:{u:"/µL",ph:"80000"},
   hb: {u:"g/dL",ph:"9"},
   lac:{u:"mmol/L",ph:"1.5"},
   glu:{u:"mg/dL",ph:"120"},
@@ -2166,7 +2166,7 @@ let scrDom="resp", scrMode="a";
 const scrVals={};
 
 function nf(x,d=1){return new Intl.NumberFormat("es-CL",{maximumFractionDigits:d}).format(x);}
-function pltNorm(v){return v==null?null:(v<2000?v*1000:v);}
+function pltNorm(v){return v;} // sin conversión — ingresar en /µL directamente
 
 function rangeTxt(safe){
   const [lo,hi]=safe;
