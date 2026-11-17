@@ -365,6 +365,7 @@ body.light .module-card{background:#fff}
     <div class="module-grid">
       <div class="module-card accent-blue" onclick="nav('mrc')"><div class="module-card-icon">MRC</div><div class="module-card-title">MRC</div><div class="module-card-sub">Fuerza muscular</div></div>
       <div class="module-card accent-blue" onclick="navPro('mobility')"><div class="module-card-icon">IMS</div><div class="module-card-title">ICU Mobility<span class="pro-badge">PRO</span></div><div class="module-card-sub">Movilidad UCI</div></div>
+      <div class="module-card accent-blue" onclick="navPro('screening')"><div class="module-card-icon">SCR</div><div class="module-card-title">Screening Movilización<span class="pro-badge">PRO</span></div><div class="module-card-sub">Hodgson · Delphi 2026</div></div>
       <div class="module-card accent-blue" onclick="nav('barthel')"><div class="module-card-icon">BTH</div><div class="module-card-title">Barthel</div><div class="module-card-sub">Independencia funcional</div></div>
       <div class="module-card accent-blue" onclick="navPro('sts')"><div class="module-card-icon">STS</div><div class="module-card-title">Sit-to-Stand<span class="pro-badge">PRO</span></div><div class="module-card-sub">5-STS · 30s-STS</div></div>
       <div class="module-card accent-blue" onclick="nav('fssicu');buildFSSICU()"><div class="module-card-icon">FSS</div><div class="module-card-title">FSS-ICU</div><div class="module-card-sub">Functional Status Score</div></div>
@@ -907,6 +908,73 @@ body.light .module-card{background:#fff}
   <div class="screen-body">
     <div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">▲</span><span class="calc-card-title">5-STS — 5 Repeticiones</span></div><div class="calc-card-body"><div class="formula-box">Tiempo en completar 5 levantadas · Ref: Bohannon RW 2006</div><div class="input-row"><div class="input-group"><label class="input-label">Sexo</label><div class="select-wrapper"><select class="select-field" id="sts-sex"><option value="M">Masculino</option><option value="F">Femenino</option></select></div></div><div class="input-group"><label class="input-label">Edad <span class="input-unit">años</span></label><input class="input-field" type="number" id="sts-age" placeholder="65"></div></div><div class="input-group"><label class="input-label">Tiempo <span class="input-unit">seg</span></label><input class="input-field" type="number" id="sts-time" placeholder="12" step="0.1"></div><button class="calc-btn" onclick="calcSTS()">EVALUAR</button><button class="reset-btn" onclick="resetCard(this)">↺ Limpiar</button><div class="error-box" id="sts-error"></div><div class="result-box" id="sts-result"><div class="result-label">5-STS</div><div><span class="result-main" id="sts-val">--</span><span class="result-unit">seg</span></div><div class="result-interp" id="sts-interp" style="margin-top:8px"></div></div><button class="report-btn" id="rpt-sts-result" onclick="genReportSTS('Informe 5-STS')" style="display:none">▤ Generar informe</button></div></div>
     <div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">▲</span><span class="calc-card-title">30s-STS — 30 Segundos</span></div><div class="calc-card-body"><div class="formula-box">N° repeticiones en 30 seg · Ref: Jones CJ 1999</div><div class="input-row"><div class="input-group"><label class="input-label">Sexo</label><div class="select-wrapper"><select class="select-field" id="sts30-sex"><option value="M">Masculino</option><option value="F">Femenino</option></select></div></div><div class="input-group"><label class="input-label">Edad <span class="input-unit">años</span></label><input class="input-field" type="number" id="sts30-age" placeholder="65"></div></div><div class="input-group"><label class="input-label">Repeticiones</label><input class="input-field" type="number" id="sts30-reps" placeholder="12"></div><button class="calc-btn" onclick="calcSTS30()">EVALUAR</button><button class="reset-btn" onclick="resetCard(this)">↺ Limpiar</button><div class="error-box" id="sts30-error"></div><div class="result-box" id="sts30-result"><div class="result-label">30s-STS</div><div><span class="result-main" id="sts30-val">--</span><span class="result-unit">rep</span></div><div class="result-interp" id="sts30-interp" style="margin-top:8px"></div></div><button class="report-btn" id="rpt-sts30-result" onclick="genReportSTS30('Informe 30s-STS')" style="display:none">▤ Generar informe</button></div></div>
+  </div>
+</div>
+
+<!-- SCREENING MOVILIZACIÓN TEMPRANA -->
+<div class="screen" id="screen-screening">
+  <div class="header"><div class="header-back" onclick="goBack()">‹</div><div class="header-title">Screening Movilización Temprana</div><div class="header-badge">MOTOR</div></div>
+  <div class="screen-body" id="screening-body" style="padding:0 0 180px 0">
+
+    <div style="padding:14px 14px 0">
+      <p style="font-size:12px;color:var(--text3);margin:0 0 10px;line-height:1.5">Semáforo clínico Hodgson 2014 · Laboratorio Enriquez Popayan 2026 · Completa solo lo disponible; el resultado se actualiza en tiempo real.</p>
+
+      <!-- Signos vitales -->
+      <div class="calc-card">
+        <div class="calc-card-header"><span class="calc-card-header-icon">♥</span><span class="calc-card-title">Signos vitales y ventilación</span></div>
+        <div class="calc-card-body" id="scr-vitals-body">
+          <!-- Generado por JS -->
+        </div>
+      </div>
+
+      <!-- Laboratorio -->
+      <div class="calc-card">
+        <div class="calc-card-header"><span class="calc-card-header-icon">🧪</span><span class="calc-card-title">Laboratorio</span></div>
+        <div class="calc-card-body">
+          <div style="margin-bottom:8px">
+            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">PATOLOGÍA PREDOMINANTE</label>
+            <div id="scr-dom-btns" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          </div>
+          <div style="margin-bottom:8px">
+            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:6px">TIPO DE MOVILIZACIÓN</label>
+            <div style="display:flex;gap:6px">
+              <button type="button" id="scr-mode-a" onclick="scrSetMode('a')" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:var(--accent);color:#fff;font-size:13px;font-weight:700">Activa</button>
+              <button type="button" id="scr-mode-s" onclick="scrSetMode('s')" style="flex:1;padding:9px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:13px">Activo-asistida</button>
+            </div>
+          </div>
+          <div id="scr-labs-body"></div>
+          <div style="margin-top:10px">
+            <label style="font-size:12px;color:var(--text3);font-weight:600;display:block;margin-bottom:4px">TRANSFUSIÓN EN CURSO</label>
+            <div id="scr-tx-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ítems clínicos colapsables -->
+      <div id="scr-items-body"></div>
+
+      <button onclick="scrReset()" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-size:14px;margin-bottom:10px">↺ Limpiar todo</button>
+
+      <div style="font-size:11px;color:var(--text3);padding-bottom:10px;line-height:1.6">
+        <strong>Fuentes:</strong> Hodgson CL et al. Crit Care 2014 · Enriquez Popayan AM et al. Crit Care Sci 2026 · Sepúlveda P et al. Crit Care Sci 2025 · Conceição TM et al. Rev Bras Ter Intensiva 2017 · Rawal H et al. CHEST 2023.
+      </div>
+    </div>
+  </div>
+
+  <!-- Veredicto fijo dentro del screen -->
+  <div id="scr-verdict" style="position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px 20px;display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:600px;margin:0 auto">
+      <div id="scr-t-bed" style="border-radius:10px;padding:10px 12px;background:var(--surface2);border-left:5px solid var(--border)">
+        <div style="font-size:11px;color:var(--text3)">Ejercicio en cama</div>
+        <div id="scr-bed-val" style="font-weight:700;font-size:14px;margin-top:2px">Sin datos</div>
+      </div>
+      <div id="scr-t-out" style="border-radius:10px;padding:10px 12px;background:var(--surface2);border-left:5px solid var(--border)">
+        <div style="font-size:11px;color:var(--text3)">Fuera de cama</div>
+        <div id="scr-out-val" style="font-weight:700;font-size:14px;margin-top:2px">Sin datos</div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('scr-reasons-box').style.display=document.getElementById('scr-reasons-box').style.display==='none'?'block':'none'" style="font-size:12px;background:none;border:0;color:var(--accent);padding:6px 0 0;text-decoration:underline;cursor:pointer">Ver motivos</button>
+    <div id="scr-reasons-box" style="display:none;max-height:30vh;overflow-y:auto;font-size:12px;margin-top:4px" id="scr-reasons"></div>
   </div>
 </div>
 
@@ -1977,6 +2045,262 @@ function calcSTS30(){
 }
 
 // === TM6M ===
+/* ===== SCREENING MOVILIZACIÓN TEMPRANA ===== */
+(function(){
+const RANK={g:0,y:1,r:2};
+const worst=(a,b)=>!a?b:!b?a:(RANK[a]>=RANK[b]?a:b);
+const SRC={H:"Hodgson 2014",E:"Enriquez Popayan 2026",S:"Sepúlveda 2025",C:"Conceição 2017",R:"Rawal 2023"};
+const srcTxt=s=>s.split("").map(k=>SRC[k]).join(", ");
+const $=id=>document.getElementById(id);
+const scrNum=s=>{if(s==null)return null;s=String(s).trim().replace(",",".");if(s==="")return null;const v=parseFloat(s);return isFinite(v)?v:null;};
+
+const VIT=[
+  {id:"svit_fio2",t:"FiO₂",u:"",r:"Verde ≤0,6. Rojo >0,8"},
+  {id:"svit_spo2",t:"SpO₂",u:"%",r:"Verde ≥90"},
+  {id:"svit_fr",t:"FR",u:"rpm",r:"Verde ≤30. Rojo >40 o <5"},
+  {id:"svit_peep",t:"PEEP",u:"cmH₂O",r:"Verde ≤10. Rojo >14"},
+  {id:"svit_fc",t:"FC",u:"lpm",r:"Rango 40–130"},
+  {id:"svit_pam",t:"PAM",u:"mmHg",r:"Rango 65–110"}
+];
+const scrVit={};
+
+const DOMAINS={
+  resp:{n:"Respiratoria"},cv:{n:"Cardiovascular"},qx:{n:"Quirúrgica"},
+  ren:{n:"Renal"},hem:{n:"Hemato/inmuno"},neu:{n:"Neurológica"}
+};
+const P20={a:[20000,null],s:[20000,null],c:{le:20000}},P40={a:[40000,null],s:[40000,null],c:{le:40000}};
+const H77={a:[7,null],s:[7,null],c:{le:7}},H87={a:[8,null],s:[7,null],c:{le:7}};
+const G={le:60,ge:250},PHc={le:7.24},K={le:3.0,ge:5.5};
+const DOM_CFG={
+  resp:{plt:P20,hb:H77,lac:{a:[0,3],s:[0,3],c:{ge:3}},glu:{a:[70,180],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}},
+  cv:{plt:P40,hb:H87,lac:{a:[0,2],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.35,7.45],c:PHc},k:{a:[3.5,5],s:[3.5,5],c:K}},
+  qx:{plt:P40,hb:H87,lac:{a:[0,2],s:[0,2],c:{ge:2}},glu:{a:[70,140],s:[70,180],c:G},inr:{a:[0.8,1.5],s:[0.8,1.5],c:{ge:1.6}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}},
+  ren:{plt:P20,hb:H77,lac:{a:[0,3],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,180],c:G},inr:{a:[0.8,3],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc},k:{a:[3.5,5],s:[3.0,5],c:K}},
+  hem:{plt:P20,hb:H77,lac:{a:[0,2],s:[0,2],c:{ge:2}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,3],c:{ge:3.1}},ph:{a:[7.35,7.45],s:[7.35,7.45],c:PHc}},
+  neu:{plt:P20,hb:H77,lac:{a:[0,2],s:[0,3],c:{ge:3}},glu:{a:[70,140],s:[70,140],c:G},inr:{a:[0.8,1.5],s:[0.8,1.5],c:{ge:1.6}},ph:{a:[7.35,7.45],s:[7.24,7.45],c:PHc}}
+};
+const PARAMS={plt:{n:"Plaquetas",u:"/µL"},hb:{n:"Hemoglobina",u:"g/dL"},lac:{n:"Lactato",u:"mmol/L"},glu:{n:"Glicemia",u:"mg/dL"},inr:{n:"INR",u:""},ph:{n:"pH",u:""},k:{n:"Potasio",u:"mmol/L"}};
+let scrDom="resp",scrMode="a";
+const scrVals={},scrTx={};
+
+const ITEMS=[
+  {s:"resp",k:"chk",id:"si_prono",t:"En posición prono",c:"rr",src:"H"},
+  {s:"resp",k:"chk",id:"si_vafo",t:"Ventilación de alta frecuencia oscilatoria",c:"yr",src:"H"},
+  {s:"resp",k:"chk",id:"si_async",t:"Asincronía paciente-ventilador",c:"yy",src:"HS"},
+  {s:"cv",k:"sel",id:"si_ritmo",t:"Ritmo cardíaco",src:"H",o:[
+    ["Sinusal o estable sin arritmia","gg"],
+    ["Taquiarritmia estable 120–150","yy"],
+    ["Taquiarritmia >150 o arritmia nueva","yr"],
+    ["Bradicardia que requiere tratamiento","rr"]]},
+  {s:"cv",k:"chk",id:"si_vaUp",t:"Dosis de vasoactivo en aumento (últimas 2 h)",c:"yr",src:"HCR"},
+  {s:"cv",k:"chk",id:"si_shock",t:"Shock con lactato >4 mmol/L",c:"yy",src:"H"},
+  {s:"cv",k:"chk",id:"si_tvp",t:"TVP o TEP aguda conocida/sospechada",c:"yy",src:"H"},
+  {s:"cv",k:"chk",id:"si_ecmoF",t:"ECMO femoral o subclavia",c:"gr",src:"H"},
+  {s:"cv",k:"chk",id:"si_bcia",t:"Balón de contrapulsación intraaórtico femoral",c:"gr",src:"H"},
+  {s:"neu",k:"sel",id:"si_rass",t:"RASS",src:"H",o:[
+    ["−1 a +1","gg"],
+    ["−2 o +2 (sedación leve / agitado)","yy"],
+    ["< −2 (sedación profunda)","yr"],
+    ["> +2 (muy agitado / combativo)","rr"]]},
+  {s:"neu",k:"sel",id:"si_cam",t:"CAM-ICU",src:"H",o:[
+    ["Negativo","gg"],
+    ["Positivo, obedece órdenes","gy"],
+    ["Positivo, no obedece órdenes","yy"]]},
+  {s:"neu",k:"chk",id:"si_hic",t:"Manejo activo de HIC con PIC fuera de rango",c:"rr",src:"HR"},
+  {s:"neu",k:"chk",id:"si_conv",t:"Convulsiones no controladas",c:"rr",src:"H"},
+  {s:"otr",k:"chk",id:"si_fx",t:"Fractura mayor inestable",c:"yr",src:"HCRS"},
+  {s:"otr",k:"chk",id:"si_sang",t:"Sangrado activo no controlado",c:"rr",src:"HCRS"},
+  {s:"otr",k:"chk",id:"si_sheath",t:"Introductores (sheaths) femorales",c:"yr",src:"H"},
+  {s:"exc",k:"chk",id:"si_bnm",t:"Bloqueo neuromuscular en curso",c:"rr",src:"CR"},
+  {s:"exc",k:"chk",id:"si_pcr",t:"PCR en las últimas 24 h",c:"rr",src:"R"},
+  {s:"exc",k:"chk",id:"si_reposo",t:"Indicación médica de reposo en cama",c:"rr",src:"R"}
+];
+const scrSt={};
+const SEC_NAMES={resp:"Respiratorio",cv:"Cardiovascular y dispositivos",neu:"Neurológico",otr:"Quirúrgico y otros",exc:"Exclusiones"};
+const VERD={g:"✅ Bajo riesgo",y:"⚠️ Precaución",r:"🔴 No movilizar sin autorización"};
+const VERD_COLOR={g:"#22C55E",y:"#F59E0B",r:"#EF4444"};
+const BORDER_COLOR={g:"#22C55E",y:"#F59E0B",r:"#EF4444"};
+
+function nf(x){return new Intl.NumberFormat("es-CL",{maximumFractionDigits:2}).format(x);}
+const pltNorm=v=>v==null?null:(v<2000?v*1000:v);
+const rangeTxt=r=>r[1]==null?"≥"+nf(r[0]):r[0]===0?"≤"+nf(r[1]):nf(r[0])+"–"+nf(r[1]);
+const contraTxt=c=>[c.le!=null?"≤"+nf(c.le):null,c.ge!=null?"≥"+nf(c.ge):null].filter(Boolean).join(" o ");
+
+function scrBuildVitals(){
+  const el=$("scr-vitals-body"); if(!el) return;
+  el.innerHTML=VIT.map(v=>`
+    <div style="display:grid;grid-template-columns:12px 1fr 110px;gap:6px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--border)">
+      <span id="sdv-${v.id}" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--border);flex:none"></span>
+      <label style="font-weight:600;font-size:13px" for="${v.id}">${v.t}<br><span style="font-size:11px;color:var(--text3);font-weight:400">${v.r}</span></label>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input id="${v.id}" data-svit="${v.id}" inputmode="decimal" autocomplete="off"
+          style="width:100%;font-size:14px;text-align:right;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--input-bg,var(--surface2));color:var(--text)">
+        <span style="font-size:11px;color:var(--text3);min-width:28px">${v.u}</span>
+      </div>
+    </div>`).join("");
+}
+
+function scrBuildDom(){
+  const el=$("scr-dom-btns"); if(!el) return;
+  el.innerHTML=Object.entries(DOMAINS).map(([k,d])=>`
+    <button type="button" onclick="scrSetDom('${k}')" id="scr-dom-${k}"
+      style="padding:7px 11px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;cursor:pointer;
+      background:${k===scrDom?'var(--accent)':'var(--surface)'};color:${k===scrDom?'#fff':'var(--text)'}">${d.n}</button>`).join("");
+}
+
+function scrBuildLabs(){
+  const el=$("scr-labs-body"); if(!el) return;
+  const cfg=DOM_CFG[scrDom];
+  el.innerHTML=Object.keys(cfg).map(k=>{
+    const R=cfg[k][scrMode];
+    const rr=k==="lac"?[R[0],R[1]]:R;
+    const cc=cfg[k].c;
+    return `<div style="display:grid;grid-template-columns:12px 1fr 110px;gap:6px 10px;align-items:center;padding:9px 0;border-top:1px solid var(--border)">
+      <span id="sdl-${k}" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--border);flex:none"></span>
+      <label style="font-weight:600;font-size:13px" for="slv-${k}">${PARAMS[k].n}<br>
+        <span style="font-size:11px;color:var(--text3);font-weight:400">Apto ${rangeTxt(rr)}. Contra ${contraTxt(cc)}</span></label>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input id="slv-${k}" data-slab="${k}" inputmode="decimal" autocomplete="off" value="${scrVals[k]??""}"
+          style="width:100%;font-size:14px;text-align:right;padding:7px 8px;border:1.5px solid var(--border);border-radius:8px;background:var(--input-bg,var(--surface2));color:var(--text)">
+        <span style="font-size:11px;color:var(--text3);min-width:28px">${PARAMS[k].u}</span>
+      </div>
+    </div>`;
+  }).join("");
+  // transfusión
+  const tx=$("scr-tx-body"); if(tx)
+    tx.innerHTML=["Glóbulos rojos","Plaquetas","Plasma"].map(n=>`
+      <label style="display:flex;gap:10px;align-items:center;padding:7px 0;border-top:1px solid var(--border);font-size:13px;cursor:pointer">
+        <input type="checkbox" data-stx="${n}" ${scrTx[n]?"checked":""} style="width:18px;height:18px;accent-color:var(--accent)">${n}
+        <span style="font-size:11px;color:var(--text3)">(esperar término)</span></label>`).join("");
+}
+
+function scrBuildItems(){
+  const el=$("scr-items-body"); if(!el) return;
+  let html="";
+  for(const [sec,name] of Object.entries(SEC_NAMES)){
+    const its=ITEMS.filter(i=>i.s===sec);
+    html+=`<div class="calc-card"><div class="calc-card-header"><span class="calc-card-header-icon">●</span><span class="calc-card-title">${name}</span></div><div class="calc-card-body">
+      <div style="display:flex;gap:8px;font-size:11px;color:var(--text3);margin-bottom:8px"><span>● izq: en cama</span><span>● der: fuera de cama</span></div>`;
+    for(const it of its){
+      if(it.k==="chk"){
+        html+=`<label style="display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--border);cursor:pointer">
+          <input type="checkbox" data-sit="${it.id}" ${scrSt[it.id]?"checked":""} style="width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--accent)">
+          <span style="font-size:13px;flex:1">${it.t}<br><span style="font-size:11px;color:var(--text3)">${srcTxt(it.src)}</span></span>
+          <span style="display:flex;gap:3px;align-items:center;flex:none">
+            <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.c[0]==='g'?'#22C55E':it.c[0]==='y'?'#F59E0B':'#EF4444'}"></span>
+            <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.c[1]==='g'?'#22C55E':it.c[1]==='y'?'#F59E0B':'#EF4444'}"></span>
+          </span></label>`;
+      } else {
+        html+=`<div style="padding:9px 0;border-top:1px solid var(--border)">
+          <label style="font-size:13px;font-weight:600;display:block;margin-bottom:5px">${it.t} <span style="font-size:11px;color:var(--text3);font-weight:400">${srcTxt(it.src)}</span></label>
+          <select data-sit="${it.id}" style="width:100%;font-size:13px;padding:9px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text)">
+            <option value="">Sin dato</option>${it.o.map((o,i)=>`<option value="${i}" ${scrSt[it.id]==i?'selected':''}>${o[0]}</option>`).join("")}
+          </select></div>`;
+      }
+    }
+    html+=`</div></div>`;
+  }
+  el.innerHTML=html;
+}
+
+function scrEvalVitals(){
+  const out=[];
+  const F=(id,b,o,t)=>{out.push({s:"vit",b,o,t,src:"H"});const d=$("sdv-"+id);if(d){d.style.background=BORDER_COLOR[worst(b,o)];d.style.borderColor=BORDER_COLOR[worst(b,o)];}};
+  let x=scrNum(scrVit["svit_fio2"]);
+  if(x!=null){const fx=x>1?x/100:x;if(fx>0.8)F("svit_fio2","r","r",`FiO₂ ${nf(fx)}: exclusión de protocolo`);else if(fx>0.6)F("svit_fio2","y","y",`FiO₂ ${nf(fx)} (>0,6)`);else F("svit_fio2","g","g",`FiO₂ ${nf(fx)}`);}
+  x=scrNum(scrVit["svit_spo2"]);if(x!=null){if(x<90)F("svit_spo2","y","r",`SpO₂ ${nf(x)} % (<90)`);else F("svit_spo2","g","g",`SpO₂ ${nf(x)} %`);}
+  x=scrNum(scrVit["svit_fr"]);if(x!=null){if(x>40||x<5)F("svit_fr","r","r",`FR ${nf(x)} rpm: exclusión`);else if(x>30)F("svit_fr","y","y",`FR ${nf(x)} rpm (>30)`);else F("svit_fr","g","g",`FR ${nf(x)} rpm`);}
+  x=scrNum(scrVit["svit_peep"]);if(x!=null){if(x>14)F("svit_peep","r","r",`PEEP ${nf(x)}: exclusión`);else if(x>10)F("svit_peep","y","y",`PEEP ${nf(x)} (>10)`);else F("svit_peep","g","g",`PEEP ${nf(x)}`);}
+  x=scrNum(scrVit["svit_fc"]);if(x!=null){if(x>150)F("svit_fc","y","r",`FC ${nf(x)} lpm (>150)`);else if(x>130||x<40)F("svit_fc","y","y",`FC ${nf(x)}, fuera 40–130`);else F("svit_fc","g","g",`FC ${nf(x)} lpm`);}
+  x=scrNum(scrVit["svit_pam"]);if(x!=null){if(x<65||x>110)F("svit_pam","y","y",`PAM ${nf(x)} mmHg, fuera 65–110`);else F("svit_pam","g","g",`PAM ${nf(x)} mmHg`);}
+  return out;
+}
+
+function scrEvalLab(){
+  const cfg=DOM_CFG[scrDom],out=[];
+  const add=(c,t)=>out.push({s:"lab",b:c,o:c,t,src:"E"});
+  for(const k of Object.keys(cfg)){
+    const c=cfg[k],R=c[scrMode];
+    let v=scrNum(scrVals[k]);const dot=$("sdl-"+k);if(dot){dot.style.background="";dot.style.borderColor="";}
+    if(k==="plt")v=pltNorm(v);
+    if(v==null)continue;
+    const x=c.c;const shown=k==="plt"?nf(v):nf(scrNum(scrVals[k]));
+    if((x.le!=null&&v<=x.le)||(x.ge!=null&&v>=x.ge)){if(dot){dot.style.background="#EF4444";dot.style.borderColor="#EF4444";}add("r",`${PARAMS[k].n} ${shown}: contraindicación`);}
+    else if(v>=R[0]&&(R[1]==null||v<=R[1])){if(dot){dot.style.background="#22C55E";dot.style.borderColor="#22C55E";}add("g",`${PARAMS[k].n} ${shown}`);}
+    else{if(dot){dot.style.background="#F59E0B";dot.style.borderColor="#F59E0B";}add("y",`${PARAMS[k].n} ${shown}: zona intermedia`);}
+  }
+  const t=Object.keys(scrTx).filter(n=>scrTx[n]);
+  if(t.length)add("r",`Transfusión en curso (${t.join(", ")})`);
+  return out;
+}
+
+function scrEvalItems(){
+  const out=[];
+  for(const it of ITEMS){
+    const v=scrSt[it.id];if(v==null||v===""||v===false)continue;
+    let c,t;
+    if(it.k==="chk"){c=it.c;t=it.t;}else{const o=it.o[+v];c=o[1];t=`${it.t}: ${o[0]}`;}
+    out.push({s:it.s,b:c[0],o:c[1],t,src:it.src});
+  }
+  return out;
+}
+
+function scrCalc(){
+  const all=[...scrEvalVitals(),...scrEvalLab(),...scrEvalItems()];
+  let B=null,O=null;
+  for(const x of all){B=worst(B,x.b);O=worst(O,x.o);}
+  const vd=$("scr-verdict");const tb=$("scr-t-bed");const to=$("scr-t-out");
+  const bv=$("scr-bed-val");const ov=$("scr-out-val");
+  if(!vd)return;
+  const hasData=all.length>0;
+  vd.style.display=hasData?"block":"none";
+  if(bv)bv.textContent=B?VERD[B]:"Sin datos";
+  if(ov)ov.textContent=O?VERD[O]:"Sin datos";
+  if(tb){tb.style.borderLeftColor=B?BORDER_COLOR[B]:"var(--border)";tb.style.background=B?BORDER_COLOR[B]+"22":"var(--surface2)";}
+  if(to){to.style.borderLeftColor=O?BORDER_COLOR[O]:"var(--border)";to.style.background=O?BORDER_COLOR[O]+"22":"var(--surface2)";}
+  const flag=all.filter(x=>x.b!=="g"||x.o!=="g");
+  const rb=$("scr-reasons-box");
+  if(rb)rb.innerHTML=flag.length?flag.map(x=>`<div style="padding:4px 0;border-top:1px solid var(--border)">
+    <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${BORDER_COLOR[x.b]};margin-right:4px"></span>
+    <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${BORDER_COLOR[x.o]};margin-right:6px"></span>
+    ${x.t} <small style="color:var(--text3)">(${srcTxt(x.src)})</small></div>`).join(""):'<div>Sin alertas.</div>';
+}
+
+window.scrSetDom=function(d){scrDom=d;scrBuildDom();scrBuildLabs();scrCalc();};
+window.scrSetMode=function(m){
+  scrMode=m;
+  const a=$("scr-mode-a"),s=$("scr-mode-s");
+  if(a){a.style.background=m==="a"?"var(--accent)":"var(--surface)";a.style.color=m==="a"?"#fff":"var(--text)";}
+  if(s){s.style.background=m==="s"?"var(--accent)":"var(--surface)";s.style.color=m==="s"?"#fff":"var(--text)";}
+  scrBuildLabs();scrCalc();
+};
+window.scrReset=function(){
+  [scrVit,scrVals,scrTx,scrSt].forEach(o=>{for(const k in o)delete o[k];});
+  scrBuildVitals();scrBuildDom();scrBuildLabs();scrBuildItems();scrCalc();
+};
+
+function scrInit(){
+  scrBuildVitals();scrBuildDom();scrBuildLabs();scrBuildItems();
+  document.addEventListener("input",function(e){
+    const t=e.target,d=t.dataset;
+    if(d.svit){scrVit[d.svit]=t.value;scrCalc();}
+    else if(d.slab){scrVals[d.slab]=t.value;scrCalc();}
+    else if(d.stx){scrTx[d.stx]=t.checked;scrCalc();}
+    else if(d.sit){scrSt[d.sit]=t.type==="checkbox"?t.checked:t.value;scrCalc();}
+  });
+  document.addEventListener("change",function(e){
+    const t=e.target,d=t.dataset;
+    if(d.stx){scrTx[d.stx]=t.checked;scrCalc();}
+    else if(d.sit){scrSt[d.sit]=t.type==="checkbox"?t.checked:t.value;scrCalc();}
+  });
+}
+// Inicializar cuando el screen sea visible
+const obs=new MutationObserver(()=>{if($("scr-vitals-body")&&!$("scr-vitals-body").children.length)scrInit();});
+obs.observe(document.body,{childList:true,subtree:true});
+setTimeout(scrInit,500);
+})();
+/* ===== FIN SCREENING ===== */
+
 function calcTM6(){
   hideError('tm6-error');hideResult('tm6-result');
   const sx=document.getElementById('tm6-sex').value,ag=parseNum('tm6-age'),h=parseNum('tm6-height'),w=parseNum('tm6-weight'),ds=parseNum('tm6-dist');
