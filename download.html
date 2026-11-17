@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descargar ICUPhysio PRO</title>
+<style>
+  :root {
+    --bg: #0B1220; --surface: #111827; --surface2: #1E293B;
+    --border: #1E2D40; --accent: #22D3EE; --text: #E2E8F0; --sub: #94A3B8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .logo {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: linear-gradient(135deg, #22D3EE, #3B82F6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 900; color: #0B1220;
+  }
+  header h1 { font-size: 22px; font-weight: 700; }
+  header p { font-size: 13px; color: var(--sub); margin-top: 2px; }
+
+  main { max-width: 800px; margin: 0 auto; padding: 32px 20px; }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+  @media(max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .card.android { border-color: #3DDC84; }
+  .card.ios { border-color: #007AFF; }
+
+  .card-icon { font-size: 36px; margin-bottom: 10px; }
+  .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .card.android h2 { color: #3DDC84; }
+  .card.ios h2 { color: #60A5FA; }
+  .card p { font-size: 13px; color: var(--sub); margin-bottom: 20px; line-height: 1.5; }
+
+  .qr-box {
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .qr-box img { width: 180px; height: 180px; display: block; }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-android { background: #3DDC84; color: #0B1220; }
+  .btn-ios { background: #3B82F6; color: white; }
+
+  .steps {
+    background: var(--surface2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: left;
+  }
+  .steps h3 { font-size: 13px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .step { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .step-num {
+    min-width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .android .step-num { background: #3DDC8422; color: #3DDC84; }
+  .ios .step-num { background: #3B82F622; color: #60A5FA; }
+  .step p { font-size: 13px; color: var(--sub); line-height: 1.5; margin: 0; }
+
+  .pro-banner {
+    background: linear-gradient(135deg, #22D3EE15, #3B82F615);
+    border: 1px solid #22D3EE33;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+  }
+  .pro-banner h2 { font-size: 18px; margin-bottom: 8px; }
+  .pro-banner p { font-size: 13px; color: var(--sub); margin-bottom: 16px; }
+  .btn-pro { background: linear-gradient(135deg, #22D3EE, #3B82F6); color: #0B1220; font-weight: 700; padding: 14px 32px; border-radius: 14px; text-decoration: none; display: inline-block; font-size: 15px; }
+
+  footer { text-align: center; padding: 24px; color: var(--sub); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">ICU</div>
+  <div>
+    <h1>ICUPhysio PRO</h1>
+    <p>Calculadoras clínicas para kinesiólogos de UCI · v1.0.2</p>
+  </div>
+</header>
+
+<main>
+  <div class="cards">
+
+    <!-- ANDROID -->
+    <div class="card android">
+      <div class="card-icon">🤖</div>
+      <h2>Android</h2>
+      <p>Escanea el QR o descarga directamente el APK en tu dispositivo Android.</p>
+      <div class="qr-box">
+        <img src="data:image/png;base64,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" alt="QR Android">
+      </div>
+      <br>
+      <a class="btn btn-android" href="https://github.com/icuphysiopro/icuphysio-pro/releases/download/v1.0.2/app-release.1.apk">⬇ Descargar APK</a>
+      <div class="steps android">
+        <h3>Instrucciones</h3>
+        <div class="step"><div class="step-num">1</div><p>Descarga el APK desde el botón o escaneando el QR</p></div>
+        <div class="step"><div class="step-num">2</div><p>Abre el archivo descargado desde notificaciones</p></div>
+        <div class="step"><div class="step-num">3</div><p>Si aparece advertencia, toca <strong>"Instalar de todas formas"</strong></p></div>
+        <div class="step"><div class="step-num">4</div><p>Activa <strong>"Instalar desde fuentes desconocidas"</strong> para tu navegador si se solicita</p></div>
+        <div class="step"><div class="step-num">5</div><p>¡Listo! Abre ICUPhysio PRO desde tu pantalla de inicio</p></div>
+      </div>
+    </div>
+
+    <!-- iOS -->
+    <div class="card ios">
+      <div class="card-icon">🍎</div>
+      <h2>iPhone / iPad</h2>
+      <p>Accede desde Safari y agrégala a tu pantalla de inicio como app nativa.</p>
+      <div class="qr-box">
+        <img src="data:image/png;base64,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SDBARoIBMhIMkJFggIwEA2QkGCAjwQAZCQbIHP53XDXHskxPVWu+m715tuzVneUUqjtaTnC53+W6v5t37pW3YICMBANkJBggI8EAGQkGyEgwQEaCATISDJCRYIBM9t9xi2oCapliWlRTPcs+v3Ov7u5oOaO7vbpb1d2/0j1brnv32YW3YICMBANkJBggI8EAGQkGyEgwQEaCATISDJCRYIDMS/87bpnqWSzTU8/uJqCW61b7vLhb83L61fkuE193llVVn614CwbISDBARoIBMhIMkJFggIwEA2QkGCAjwQAZCQbIHP533DJrtFjmlL7f5NU772jxzueqmularvvs7sl5tvx+F9X9egsGyEgwQEaCATISDJCRYICMBANkJBggI8EAGQkGyBxOxz1bZpyWz96t6u6bq3mhZ3dzWct1F3fP1d2zsbi7X9/83/MWDJCRYICMBANkJBggI8EAGQkGyEgwQEaCATISDJA5nI5754TM3aq+n2Uqb5mdu/sXr+qOnt3db2X5lS1n9BX32VswQEaCATISDJCRYICMBANkJBggI8EAGQkGyEgwQOZndeW7GZhny9TW8s3P7nbjK05eVbvxfN27VS3PxnK+dzNs7/yVVfv8zFswQEaCATISDJCRYICMBANkJBggI8EAGQkGyEgwQCabjnu2zPw8u5sIWq5bWXZjud9qeupuwm15Yu9WtViejbvPLk9d1Zxn3oIBMhIMkJFggIwEA2QkGCAjwQAZCQbISDBARoIBMi+djlvmhe7mlJaZrmVVi7s5peqOFssJ3ll2cvmlLJbrLp/9frwFA2QkGCAjwQAZCQbISDBARoIBMhIMkJFggIwEA2R+fD6f7OLfy93Mz1ecnlrm0Jb7fbbMCt59c7Wqxe92Rne8BQNkJBggI8EAGQkGyEgwQEaCATISDJCRYICMBANkDv877m5arHI3EfQVv7nyFWfJFl/xd/TOM7r7lS28BQNkJBggI8EAGQkGyEgwQEaCATISDJCRYICMBANkDv877m5C5s4717zMRy3/4fb9vHM3lqmt5Ym9e64Wd6u6++aFt2CAjAQDZCQYICPBABkJBshIMEBGggEyEgyQkWCAzOF/xy2WOZZnyyTSs2XNy6ruJr6Wb17uaHF3CnfffPdcLWu+W9U7VU+st2CAjAQDZCQYICPBABkJBshIMEBGggEyEgyQkWCAzEun4/ijuym1ZXqqWtXzde9W9WyZrbo7hWfvvO5ygnf/pLec7zNvwQAZCQbISDBARoIBMhIMkJFggIwEA2QkGCAjwQAZ03G/zDI/s0z13Fmmp+58xb1ano3ls3fuTqH65oq3YICMBANkJBggI8EAGQkGyEgwQEaCATISDJCRYIDMS6fj3jkRdGf5v6xFdd07y2zV3WeXb76z/MqWycm7p27Z5+WOFt6CATISDJCRYICMBANkJBggI8EAGQkGyEgwQEaCATLZdFw1i1J55/0uq7qbrbr75mfL1Nby2XeewmKZUnu27NVy+ne8BQNkJBggI8EAGQkGyEgwQEaCATISDJCRYICMBANkfnw+n+ziAL83b8EAGQkGyEgwQEaCATISDJCRYICMBANkJBggI8EAGQkGyEgwQEaCATISDJCRYICMBANkJBggI8EAGQkGyEgwQEaCATISDJCRYICMBANkJBggI8EAGQkGyEgwQEaCATISDJD5F59rzpN7n7YgAAAAAElFTkSuQmCC" alt="QR iOS">
+      </div>
+      <br>
+      <a class="btn btn-ios" href="https://icuphysiopro.github.io/icuphysio-pro/">🌐 Abrir en Safari</a>
+      <div class="steps ios">
+        <h3>Instrucciones</h3>
+        <div class="step"><div class="step-num">1</div><p>Abre el link en <strong>Safari</strong> (no Chrome ni otro navegador)</p></div>
+        <div class="step"><div class="step-num">2</div><p>Toca el ícono de <strong>compartir</strong> (cuadrado con flecha hacia arriba)</p></div>
+        <div class="step"><div class="step-num">3</div><p>Desliza y toca <strong>"Añadir a pantalla de inicio"</strong></p></div>
+        <div class="step"><div class="step-num">4</div><p>Confirma el nombre y toca <strong>"Añadir"</strong></p></div>
+        <div class="step"><div class="step-num">5</div><p>¡Listo! Aparece el ícono de ICUPhysio en tu pantalla de inicio</p></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PRO Banner -->
+  <div class="pro-banner">
+    <h2>🔓 Desbloquea la versión PRO</h2>
+    <p>Accede a todos los módulos avanzados con un pago único de <strong>.990 CLP</strong></p>
+    <a class="btn-pro" href="https://icuphysio.lemonsqueezy.com/checkout/buy/100fe751-3a96-40c7-8101-6216d15eca37">Obtener PRO — .990 CLP</a>
+  </div>
+</main>
+
+<footer>
+  ICUPhysio PRO © 2026 · Edanco · Desarrollado por Klgo. Eduardo Cortés C.
+</footer>
+
+</body>
+</html>
